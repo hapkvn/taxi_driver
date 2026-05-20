@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
         btnlogin = findViewById(R.id.btnLogin);
-        btnResign = findViewById(R.id.btnresgin);
+        btnResign = findViewById(R.id.btnResign);
         preferences = getSharedPreferences("login", MODE_PRIVATE);
         boolean logined = preferences.getBoolean("lged", false);
 
