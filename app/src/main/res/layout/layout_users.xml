@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp">
+
+    <ImageView
+        android:id="@+id/imageLS"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/list" />
+
+    <TextView
+        android:id="@+id/txtUserLs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:text="Tên"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="@+id/imageLS"
+        app:layout_constraintStart_toStartOf="@+id/imageLS"
+        app:layout_constraintTop_toTopOf="@+id/imageLS"
+        app:layout_constraintVertical_bias="0.508" />
+
+    <TextView
+        android:id="@+id/txtPointLs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="100dp"
+        android:text="Điểm"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="@+id/imageLS"
+
+        app:layout_constraintEnd_toEndOf="@+id/imageLS"
+        app:layout_constraintTop_toTopOf="@+id/imageLS"
+        app:layout_constraintVertical_bias="0.508" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -17,7 +17,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.game.MainScene;
 import com.example.game.R;
-import com.example.game.admin.admin_manage_layout;
+import com.example.game.admin.adminMemu;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -49,7 +49,7 @@ public class loginLayout extends AppCompatActivity {
         txtuerName = findViewById(R.id.txtUser);
         txtPassword = findViewById(R.id.txtPass);
 
-        btnLogin = findViewById(R.id.btnLogin);
+        btnLogin = findViewById(R.id.btnPlay);
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,7 +100,7 @@ public class loginLayout extends AppCompatActivity {
                             int role = userObj .getInt("role");
 
                             if(role ==1){
-                                Intent it = new Intent(loginLayout.this, admin_manage_layout.class);
+                                Intent it = new Intent(loginLayout.this, adminMemu.class);
                                 startActivity(it);
                             }else{
                                 Intent it = new Intent(loginLayout.this, MainScene.class);

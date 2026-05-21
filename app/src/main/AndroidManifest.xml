@@ -16,6 +16,9 @@
         android:usesCleartextTraffic="true"
         tools:ignore="ExtraText">
         <activity
+            android:name=".ListView.users_list"
+            android:exported="false" />
+        <activity
             android:name=".admin.adminMemu"
             android:exported="false" />
         <activity android:name=".MainMenu.settingLayout"
