@@ -15,6 +15,8 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.game.MainScene;
 import com.example.game.R;
 
+
+
 public class MainActivity extends AppCompatActivity {
     Button btnlogin, btnResign;
     SharedPreferences preferences;
@@ -23,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        Intent testGame = new Intent(MainActivity.this, MainScene.class);
+        Intent testGame = new Intent(MainActivity.this,settingLayout.class);
         startActivity(testGame);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
