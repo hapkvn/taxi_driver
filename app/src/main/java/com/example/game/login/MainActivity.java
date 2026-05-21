@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import com.example.game.MainMenu.settingLayout;
+
 import com.example.game.MainScene;
 import com.example.game.R;
 
@@ -25,20 +25,22 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        Intent testGame = new Intent(MainActivity.this,settingLayout.class);
+         Intent testGame = new Intent(MainActivity.this,MainScene.class);
         startActivity(testGame);
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        btnlogin = findViewById(R.id.btnLogin);
-        btnResign = findViewById(R.id.btnResign);
+        btnlogin = findViewById(R.id.btnPlay);
+        btnResign = findViewById(R.id.btnUsersAdmin);
+
         preferences = getSharedPreferences("login", MODE_PRIVATE);
         boolean logined = preferences.getBoolean("lged", false);
 
         if(logined){
-            Intent it = new Intent(MainActivity.this,settingLayout.class);
+            Intent it = new Intent(MainActivity.this,MainScene.class);
             startActivity(it);
             finish();
             return;
