@@ -18,9 +18,8 @@
         <activity
             android:name=".admin.adminMemu"
             android:exported="false" />
-        <activity
-            android:name=".admin.AdminMedu"
-            android:exported="false" />
+        <activity android:name=".MainMenu.settingLayout"
+            android:allowEmbedded="false" />
         <activity
             android:name=".MainMenu.menuLayout"
             android:exported="false" />
@@ -39,6 +38,7 @@
         <activity
             android:name=".login.MainActivity"
             android:exported="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

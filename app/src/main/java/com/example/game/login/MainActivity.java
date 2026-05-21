@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-
+import com.example.game.MainMenu.settingLayout;
 import com.example.game.MainScene;
 import com.example.game.R;
 
@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         boolean logined = preferences.getBoolean("lged", false);
 
         if(logined){
-            Intent it = new Intent(MainActivity.this,MainScene.class);
+            Intent it = new Intent(MainActivity.this,settingLayout.class);
             startActivity(it);
             finish();
             return;

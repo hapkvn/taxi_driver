@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#1452B3"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:padding="24dp"
+    tools:context=".MainMenu.settingLayout">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="RACING STREET"
+        android:textColor="#FFFFFF"
+        android:textSize="28sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:text="CÀI ĐẶT"
+        android:textColor="#CBD5E1"
+        android:textSize="22sp" />
+
+    <TextView
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="CHỌN KIỂU XE:"
+        android:textColor="#CBD5E1"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+    <Spinner
+        android:id="@+id/spnChooseCar"
+        android:layout_width="280dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="8dp"
+        android:background="#7A88A4"
+        android:popupBackground="#7A88A4" />
+
+    <TextView
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="CHỌN ĐỘ KHÓ:"
+        android:textColor="#CBD5E1"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <RadioGroup
+        android:id="@+id/rgDifficultyBasic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp">
+
+        <RadioButton
+            android:id="@+id/rbEasy"
+            android:layout_width="280dp"
+            android:layout_height="wrap_content"
+            android:text="Dễ"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:padding="8dp" />
+
+        <RadioButton
+            android:id="@+id/rbMedium"
+            android:layout_width="280dp"
+            android:layout_height="wrap_content"
+            android:text="Trung bình"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:padding="8dp"
+            android:checked="true" />
+        <RadioButton
+        android:id="@+id/rbHard"
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:text="Khó"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:padding="8dp" />
+
+    </RadioGroup>
+
+    <TextView
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="ÂM THANH:"
+        android:textColor="#CBD5E1"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/switchSound"
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Bật tiếng trong game"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:paddingHorizontal="8dp"
+        android:checked="true" />
+
+    <Button
+        android:id="@+id/btnChangePass"
+        android:layout_width="280dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#FB4247"
+        android:text="ĐỔI MẬT KHẨU"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/btnBack"
+        android:layout_width="280dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="#1E293B"
+        android:text="QUAY LẠI"
+        android:textColor="#CBD5E1"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+</LinearLayout>
