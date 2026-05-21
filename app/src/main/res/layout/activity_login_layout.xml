@@ -66,7 +66,7 @@
         app:layout_constraintWidth_percent="0.85" />
 
     <Button
-        android:id="@+id/btnResign"
+        android:id="@+id/btnLogin"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginTop="40dp"

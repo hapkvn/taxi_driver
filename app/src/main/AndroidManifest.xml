@@ -16,6 +16,12 @@
         android:usesCleartextTraffic="true"
         tools:ignore="ExtraText">
         <activity
+            android:name=".admin_manage_layout"
+            android:exported="false" />
+        <activity
+            android:name=".admin_layout"
+            android:exported="false" />
+        <activity
             android:name=".MainScene"
             android:exported="false" />
         <activity
