@@ -15,6 +15,7 @@ public class MainScene extends AppCompatActivity {
 
     private GameView gameView;
     private ImageButton btnLeft, btnRight, btnUp, btnDown, btnJump;
+    private audioMain audio;
 
     // Khai báo các đối tượng menu Game Over
     private LinearLayout layoutGameOver;
@@ -25,6 +26,7 @@ public class MainScene extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_scene);
+        audio = new audioMain(this);
 
         // Ánh xạ 5 nút điều khiển
         gameView = findViewById(R.id.gameView);
@@ -38,7 +40,7 @@ public class MainScene extends AppCompatActivity {
         layoutGameOver = findViewById(R.id.layoutGameOver);
         btnRestart = findViewById(R.id.btnRestart);
         btnHome = findViewById(R.id.btnHome);
-
+        audio.playSound("background");
         // --- XỬ LÝ ẨN NÚT KHI GAME OVER ---
         gameView.setGameOverListener(new GameView.GameOverListener() {
             @Override
@@ -94,6 +96,27 @@ public class MainScene extends AppCompatActivity {
             return true;
         });
 
-        btnJump.setOnClickListener(v -> gameView.triggerJump());
+        btnJump.setOnClickListener(v ->{
+            audio.playSound("fly");
+            gameView.triggerJump();
+        });
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(audio!=null){
+            audio.bgSoundStart();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Giải phóng SoundPool khi Activity này bị hủy hẳn (bấm nút Home hoặc văng game)
+        if (audio != null) {
+            audio.release();
+        }
     }
 }

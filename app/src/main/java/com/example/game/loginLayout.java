@@ -63,7 +63,7 @@ public class loginLayout extends AppCompatActivity {
                     txtPassword.requestFocus();
                     return;
                 }else{
-
+                    loginUer(user_name, password);
                 }
             }
         });
