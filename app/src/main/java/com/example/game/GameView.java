@@ -1,6 +1,7 @@
 package com.example.game;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -20,7 +21,7 @@ public class GameView extends View {
     private int score = 0;
 
     // Đã hạ tốc độ gốc từ 15 xuống 10 để game dễ thở hơn
-    private int baseSpeed = 10;
+    private int baseSpeed;
     private int screenWidth, screenHeight;
     private boolean isGameOver = false;
     private Paint scorePaint;
@@ -46,7 +47,24 @@ public class GameView extends View {
 
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        playerCar = BitmapFactory.decodeResource(getResources(), R.drawable.redcar);
+        SharedPreferences prefs = context.getSharedPreferences("login", Context.MODE_PRIVATE);
+        String selectedCar = prefs.getString("selected_car", "blue");
+        int carRes;
+        switch (selectedCar) {
+            case "red":    carRes = R.drawable.redcar;    break;
+            case "yellow": carRes = R.drawable.yellowcar; break;
+            case "truck":  carRes = R.drawable.truck;     break;
+            case "fly":    carRes = R.drawable.flycar;    break;
+            default:       carRes = R.drawable.bluecar;   break;
+        }
+        playerCar = BitmapFactory.decodeResource(getResources(), carRes);
+
+        int difficulty = prefs.getInt("difficulty", 0);
+        switch (difficulty) {
+            case 1:  baseSpeed = 13; break;
+            case 2:  baseSpeed = 17; break;
+            default: baseSpeed = 8;  break;
+        }
         flyCar = BitmapFactory.decodeResource(getResources(), R.drawable.flycar);
 
         enemyCarsArray = new Bitmap[]{
@@ -99,8 +117,10 @@ public class GameView extends View {
 
                 if (enemy.y > screenHeight) {
                     score++;
-                    // Giảm nhịp độ tăng độ khó: Cứ mỗi 10 điểm mới được cộng thêm 1 đơn vị tốc độ
-                    baseSpeed = 10 + (score / 10);
+                    // Điều chỉnh độ khó
+                    int diff = getContext().getSharedPreferences("login", Context.MODE_PRIVATE).getInt("difficulty", 0);
+                    int minSpeed = (diff == 2) ? 17 : (diff == 1) ? 13 : 8;
+                    baseSpeed = minSpeed + (score / 10);
 
                     // Khi một xe chạy qua màn hình, đẩy nó lên tít trên đỉnh (cách ít nhất 500px) để tạo khe hở
                     enemy.resetPosition(baseSpeed, 500);

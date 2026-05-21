@@ -30,6 +30,25 @@ public class settingLayout extends AppCompatActivity {
         updateSoundButton(btnSound);
         updateDifficultyButton(btnDifficulty);
 
+        btnChangePass.setOnClickListener(v -> {
+            EditText input = new EditText(this);
+            input.setHint("Mật khẩu mới");
+            input.setInputType(android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            new AlertDialog.Builder(this)
+                    .setTitle("Đổi mật khẩu")
+                    .setView(input)
+                    .setPositiveButton("Lưu", (dialog, which) -> {
+                        String newPass = input.getText().toString().trim();
+                        if (!newPass.isEmpty()) {
+                            prefs.edit().putString("password", newPass).apply();
+                            Toast.makeText(this, "Đã đổi mật khẩu!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(this, "Mật khẩu không được để trống!", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .setNegativeButton("Hủy", null)
+                    .show();
+        });
 
         btnChooseCar.setOnClickListener(v -> {
             String[] cars    = {"Xe thường", "Xe đỏ", "Xe vàng", "Xe tải", "Xe bay"};
@@ -67,6 +86,7 @@ public class settingLayout extends AppCompatActivity {
 
         btnBack.setOnClickListener(v -> finish());
     }
+
 
     private void updateCarButton(Button btn) {
         String car = prefs.getString("selected_car", "normal");
