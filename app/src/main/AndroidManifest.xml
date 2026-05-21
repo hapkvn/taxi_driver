@@ -16,19 +16,22 @@
         android:usesCleartextTraffic="true"
         tools:ignore="ExtraText">
         <activity
-            android:name=".admin_manage_layout"
+            android:name=".MainMenu.menuLayout"
+            android:exported="false" />
+        <activity
+            android:name=".admin.admin_manage_layout"
             android:exported="false" />
         <activity
             android:name=".MainScene"
             android:exported="false" />
         <activity
-            android:name=".loginLayout"
+            android:name=".login.loginLayout"
             android:exported="false" />
         <activity
-            android:name=".resignLayout"
+            android:name=".login.resignLayout"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".login.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

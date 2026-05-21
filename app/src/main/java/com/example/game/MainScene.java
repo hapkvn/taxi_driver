@@ -11,6 +11,8 @@ import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.game.login.MainActivity;
+
 public class MainScene extends AppCompatActivity {
 
     private GameView gameView;

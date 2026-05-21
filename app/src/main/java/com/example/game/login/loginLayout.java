@@ -1,4 +1,4 @@
-package com.example.game;
+package com.example.game.login;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,11 +15,14 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.game.MainScene;
+import com.example.game.R;
+import com.example.game.admin.admin_manage_layout;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 

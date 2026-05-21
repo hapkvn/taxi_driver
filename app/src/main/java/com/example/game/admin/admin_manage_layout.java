@@ -1,4 +1,4 @@
-package com.example.game;
+package com.example.game.admin;
 
 import android.os.Bundle;
 
@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.example.game.R;
 
 public class admin_manage_layout extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package com.example.game;
+package com.example.game.login;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,6 +11,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.example.game.MainScene;
+import com.example.game.R;
 
 public class MainActivity extends AppCompatActivity {
     Button btnlogin, btnResign;

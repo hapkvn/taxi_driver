@@ -1,4 +1,4 @@
-package com.example.game;
+package com.example.game.MainMenu;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -8,6 +8,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.game.R;
 
 public class settingLayout extends AppCompatActivity {
 
