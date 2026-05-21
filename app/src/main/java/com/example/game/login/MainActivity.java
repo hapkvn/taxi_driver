@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         boolean logined = preferences.getBoolean("lged", false);
 
         if(logined){
-            Intent it = new Intent(MainActivity.this, MainScene.class);
+            Intent it = new Intent(MainActivity.this,MainScene.class);
             startActivity(it);
             finish();
             return;
