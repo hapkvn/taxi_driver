@@ -1,10 +1,13 @@
 package com.example.game;
 
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
@@ -13,8 +16,22 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.io.IOException;
+import java.lang.reflect.Executable;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import okhttp3.FormBody;
+import okhttp3.OkHttp;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
 public class resignLayout extends AppCompatActivity {
-    SQLiteDatabase sqLiteDatabase;
+    private  static final String API_REGISTER_URL = "http://10.0.2.2/android_user_api/register.php";
+
     EditText txtuser, txtname, txtpass, txtvePass;
     Button btnResign;
     @Override
@@ -32,15 +49,6 @@ public class resignLayout extends AppCompatActivity {
         txtpass = findViewById(R.id.txtPass);
         txtvePass = findViewById(R.id.txtVePass);
         btnResign = findViewById(R.id.btnResign);
-
-        sqLiteDatabase = openOrCreateDatabase("game_user.db", MODE_PRIVATE, null);
-
-        try{
-            String sql = "create table if not exists data_user(user text PRIMARY KEY, name text not null, pass text not null)";
-            sqLiteDatabase.execSQL(sql);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
 
         btnResign.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,33 +68,45 @@ public class resignLayout extends AppCompatActivity {
                     txtuser.requestFocus();
                     txtvePass.requestFocus();
                     return;
+                }else if( !pass.equals(vePass)){
+                    Toast.makeText(resignLayout.this, "mật khẩu không khớp", Toast.LENGTH_LONG).show();
                 }
                 else{
-                    if(!pass.equals(vePass)){
-                        AlertDialog.Builder builder = new AlertDialog.Builder(resignLayout.this);
-                        builder.setTitle("Thông báo!");
-                        builder.setMessage("Mật khẩu không khớp!");
-                        builder.show();
-                        return;
-                    }
-                    try {
-                        String sql = "INSERT INTO data_user(user, name, pass) VALUES(?, ?, ?)";
-                        sqLiteDatabase.execSQL(sql, new Object[]{user, name, pass});
-                        AlertDialog.Builder builder = new AlertDialog.Builder(resignLayout.this);
-                        builder.setTitle("Thông báo!");
-                        builder.setMessage("Đăng ký thành công!");
-                        builder.show();
-                    } catch (Exception e) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(resignLayout.this);
-                        builder.setTitle("Lỗi!");
-                        builder.setMessage("Tài khoản đã tồn tại hoặc có lỗi xảy ra!");
-                        builder.show();
-                    }
+                    registerUser(user, name, pass);
                 }
-
             }
         });
-
-
     }
+
+    private void registerUser(String user_name, String full_name, String password){
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.execute(() ->{
+            OkHttpClient client =new OkHttpClient();
+            RequestBody formbody = new FormBody.Builder()
+                    .add("user_name", user_name)
+                    .add("full_name", full_name)
+                    .add("password", password)
+                    .build();
+            Request request = new Request.Builder()
+                .url(API_REGISTER_URL)
+                .post(formbody)
+                .build();
+            try(Response response = client.newCall(request).execute()){
+                if(response.isSuccessful() && response.body() != null){
+                    String jsonReponse = response.body().string();
+                    Log.d("API_RESULT", jsonReponse);
+                    runOnUiThread(()->{
+                        Intent it = new Intent(resignLayout.this, loginLayout.class);
+                        startActivity(it);
+                        finish();
+                    });
+
+                }
+            } catch (IOException e) {
+                Log.e("API_ERROR", "Lỗi mạng" + e.getMessage());
+                runOnUiThread(()-> Toast.makeText(resignLayout.this, "Lỗi kết nối máy chủ" + e.getMessage(), Toast.LENGTH_LONG).show());
+            }
+        });
+    }
+
 }
