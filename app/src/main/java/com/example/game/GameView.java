@@ -24,7 +24,7 @@ public class GameView extends View {
     private int playerX, playerY;
     private int score = 0;
 
-    // Đã hạ tốc độ gốc từ 15 xuống 10 để game dễ thở hơn
+
     private int baseSpeed;
     private int screenWidth, screenHeight;
     private boolean isGameOver = false;
@@ -53,16 +53,32 @@ public class GameView extends View {
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
         SharedPreferences prefs = context.getSharedPreferences("login", Context.MODE_PRIVATE);
-        String selectedCar = prefs.getString("selected_car", "blue");
+        String selectedCar = prefs.getString("selected_car", "sport");
         int carRes;
+        int flyCarRes;
         switch (selectedCar) {
-            case "red":    carRes = R.drawable.redcar;    break;
-            case "yellow": carRes = R.drawable.yellowcar; break;
-            case "truck":  carRes = R.drawable.truck;     break;
-            case "fly":    carRes = R.drawable.flycar;    break;
-            default:       carRes = R.drawable.bluecar;   break;
+
+            case "fly":
+                // Trường hợp 'selected_car' là "fly", ta gán nó về một mẫu xe mặc định.
+                carRes = R.drawable.redcar; // Ví dụ: xe đỏ
+                flyCarRes = R.drawable.flycar; // Ảnh bay của xe đỏ
+                break;
+            case "sport":
+                carRes = R.drawable.sportcar;
+                flyCarRes = R.drawable.sportcarfly; // Ảnh bay của xe thể thao
+                break;
+            case "sportfly":
+                carRes = R.drawable.sportcarfly; // Xe thể thao ở trạng thái bay
+                flyCarRes = R.drawable.sportcarfly; // Ảnh bay giữ nguyên
+                break;
+            default: // Mặc định là xe đỏ
+                carRes = R.drawable.redcar;
+                flyCarRes = R.drawable.flycar; // Ảnh bay mặc định
+                break;
         }
         playerCar = BitmapFactory.decodeResource(getResources(), carRes);
+
+
 
         int difficulty = prefs.getInt("difficulty", 0);
         switch (difficulty) {
@@ -70,7 +86,7 @@ public class GameView extends View {
             case 2:  baseSpeed = 17; break;
             default: baseSpeed = 8;  break;
         }
-        flyCar = BitmapFactory.decodeResource(getResources(), R.drawable.flycar);
+        flyCar = BitmapFactory.decodeResource(getResources(), flyCarRes);
 
         enemyCarsArray = new Bitmap[]{
                 BitmapFactory.decodeResource(getResources(), R.drawable.bluecar),
@@ -147,8 +163,16 @@ public class GameView extends View {
                 canvas.drawBitmap(enemy.image, enemy.x, enemy.y, null);
             }
             finalSoure = score;
-            String username = preferences.getString("userName", null);
-            updatePoint.updatePoint(username, finalSoure);
+            SharedPreferences prefs = getContext().getSharedPreferences("login", Context.MODE_PRIVATE);
+            String username = prefs.getString("userName", "Guest"); // Thêm giá trị mặc định là "Guest"
+
+
+            if (this.updatePoint != null && username != null) {
+                this.updatePoint.updatePoint(username, finalSoure);
+            } else {
+
+
+            }
 
             if (isFlying) {
                 canvas.drawBitmap(flyCar, playerX, playerY, null);
@@ -162,13 +186,33 @@ public class GameView extends View {
             invalidate();
 
         } else {
+            // Vẽ lại toàn bộ xe trên màn hình lúc chết để làm nền
             for (Enemy enemy : enemies) {
                 canvas.drawBitmap(enemy.image, enemy.x, enemy.y, null);
             }
             canvas.drawBitmap(playerCar, playerX, playerY, null);
 
+            // 1. CĂN GIỮA VÀ ĐẨY CHỮ GAME OVER LÊN TRÊN
+            scorePaint.setTextAlign(Paint.Align.CENTER); // Tự động căn giữa trục X
             scorePaint.setColor(Color.RED);
-            canvas.drawText("GAME OVER", (screenWidth / 2) - 180, screenHeight / 2, scorePaint);
+            scorePaint.setTextSize(90); // Chữ to và ngầu hơn
+            scorePaint.setFakeBoldText(true);
+
+            // Đặt Y ở khoảng 1/3 phía trên màn hình (để nhường chỗ cho nút bấm bên dưới)
+            float gameOverY = screenHeight / 3.5f;
+            canvas.drawText("GAME OVER", screenWidth / 2f, gameOverY, scorePaint);
+
+            // 2. HIỂN THỊ ĐIỂM SỐ NGAY BÊN DƯỚI CHỮ GAME OVER
+            scorePaint.setColor(Color.YELLOW); // Chữ điểm màu vàng cho nổi bật
+            scorePaint.setTextSize(65);
+
+            // Đẩy tọa độ Y xuống thêm 100px so với chữ GAME OVER
+            canvas.drawText("FINAL SCORE: " + score, screenWidth / 2f, gameOverY + 120, scorePaint);
+
+            // 3. TRẢ LẠI CÀI ĐẶT CŨ CHO LẦN CHƠI SAU
+            // Tránh việc điểm số lúc đang chơi ở góc trái trên cùng bị căn giữa sai vị trí
+            scorePaint.setTextAlign(Paint.Align.LEFT);
+            scorePaint.setTextSize(60);
         }
     }
 
