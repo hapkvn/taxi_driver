@@ -1,57 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    android:background="@drawable/loadingscreen"
     tools:context=".MainMenu.menuLayout">
-
-    <Button
-        android:id="@+id/btnNewGame"
-        android:layout_width="240dp"
-        android:layout_height="56dp"
-        android:text="Chơi mới"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="#FFFFFF"
-        android:backgroundTint="#FB4247"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.55" />
-
-    <Button
-        android:id="@+id/btnRank"
-        android:layout_width="240dp"
-        android:layout_height="56dp"
-        android:layout_marginTop="16dp"
-        android:backgroundTint="#FB4247"
-        android:text="Bảng xếp hạng"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/btnNewGame"
-        app:layout_constraintStart_toStartOf="@+id/btnNewGame"
-        app:layout_constraintTop_toBottomOf="@+id/btnNewGame" />
-
-    <Button
-        android:id="@+id/btnSetting"
-        android:layout_width="240dp"
-        android:layout_height="56dp"
-        android:layout_marginTop="16dp"
-        android:backgroundTint="#FB4247"
-        android:text="Cài Đặt"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/btnRank"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/btnRank"
-        app:layout_constraintTop_toBottomOf="@+id/btnRank" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

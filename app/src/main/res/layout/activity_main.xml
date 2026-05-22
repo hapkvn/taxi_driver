@@ -14,31 +14,29 @@
         android:id="@+id/btnlogin"
         android:layout_width="240dp"
         android:layout_height="56dp"
-        android:backgroundTint="#FB4247"
         android:text="Đăng nhập"
-        android:textColor="#FFFFFF"
         android:textSize="20sp"
         android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#FB4247"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.499" />
+        app:layout_constraintVertical_bias="0.55" />
 
     <Button
         android:id="@+id/btnResign"
         android:layout_width="240dp"
         android:layout_height="56dp"
-        android:layout_marginBottom="12dp"
-        android:backgroundTint="#FB4247"
+        android:layout_marginTop="16dp"
         android:text="Đăng ký"
-        android:textColor="#FFFFFF"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/btnlogin"
-        app:layout_constraintEnd_toEndOf="@+id/btnlogin"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/btnlogin" />
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#FB4247"
+        app:layout_constraintEnd_toEndOf="@+id/btnPlay"
+        app:layout_constraintStart_toStartOf="@+id/btnPlay"
+        app:layout_constraintTop_toBottomOf="@+id/btnPlay" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

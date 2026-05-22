@@ -46,7 +46,7 @@ public class resignLayout extends AppCompatActivity {
         txtname = findViewById(R.id.txtName);
         txtpass = findViewById(R.id.txtPass);
         txtvePass = findViewById(R.id.txtVePass);
-        btnResign = findViewById(R.id.btnRank);
+        btnResign = findViewById(R.id.btnUsersAdmin);
 
         btnResign.setOnClickListener(new View.OnClickListener() {
             @Override
