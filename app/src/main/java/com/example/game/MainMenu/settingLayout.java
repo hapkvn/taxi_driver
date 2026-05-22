@@ -32,16 +32,23 @@ public class settingLayout extends AppCompatActivity {
         btnChangePass = findViewById(R.id.btnChangePass);
         btnBack = findViewById(R.id.btnBack);
 
-        // 2. Bơm danh sách các loại xe vào Spinner
-        // Khớp với các loại xe bạn đã định nghĩa trong GameView: blue, red, yellow, truck, fly
-        String[] cars = {"Xe Xanh (Mặc định)", "Xe Đỏ", "Xe Vàng", "Xe Tải", "Xe Bay"};
+        // 2. Bơm danh sách các loại xe vào Spinner (Chỉ còn 2 xe)
+        String[] cars = {"Xe Đỏ (Mặc định)", "Xe Thể thao"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, cars);
         spnChooseCar.setAdapter(adapter);
 
         // 3. Đọc dữ liệu cài đặt cũ để hiển thị lại lên màn hình
         SharedPreferences prefs = getSharedPreferences("login", Context.MODE_PRIVATE);
 
-        // Load Độ khó (Trong GameView: 0 = Dễ (speed 8), 1 = Vừa (speed 13), 2 = Khó (speed 17))
+        // Tự động tải lại chiếc xe người chơi đã chọn trước đó
+        String savedCar = prefs.getString("selected_car", "red");
+        int carPositionIndex = 0; // Vị trí 0: Xe Đỏ (Mặc định)
+        if (savedCar.equals("sport")) {
+            carPositionIndex = 1; // Vị trí 1: Xe Thể thao
+        }
+        spnChooseCar.setSelection(carPositionIndex);
+
+        // Load Độ khó (Trong GameView: 0 = Dễ, 1 = Vừa, 2 = Khó)
         int diff = prefs.getInt("difficulty", 1);
         if (diff == 0) rgDifficulty.check(R.id.rbEasy);
         else if (diff == 2) rgDifficulty.check(R.id.rbHard);
@@ -57,13 +64,14 @@ public class settingLayout extends AppCompatActivity {
             public void onClick(View v) {
                 SharedPreferences.Editor editor = prefs.edit();
 
-                // Lưu loại xe đã chọn
+                // Lưu loại xe đã chọn (Chỉ kiểm tra 2 vị trí)
                 int carPosition = spnChooseCar.getSelectedItemPosition();
-                String carCode = "blue"; // Mặc định
-                if(carPosition == 1) carCode = "red";
-                else if(carPosition == 2) carCode = "yellow";
-                else if(carPosition == 3) carCode = "truck";
-                else if(carPosition == 4) carCode = "fly";
+                String carCode = "red"; // Mặc định là xe đỏ
+
+                if (carPosition == 1) {
+                    carCode = "sport"; // Nếu chọn vị trí 1 thì lưu là xe thể thao
+                }
+
                 editor.putString("selected_car", carCode);
 
                 // Lưu độ khó đã chọn
@@ -87,8 +95,15 @@ public class settingLayout extends AppCompatActivity {
         btnChangePass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: Dùng Intent để gọi màn hình activity_change_password.xml như đã bàn ở trên
-                Toast.makeText(settingLayout.this, "Tính năng Đổi mật khẩu đang được phát triển", Toast.LENGTH_SHORT).show();
+                // TODO: Dùng Intent để gọi màn hình activity_change_password.xml khi cấu hình xong
+                btnChangePass.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // Lệnh chuyển sang file changePasswordLayout
+                        android.content.Intent intent = new android.content.Intent(settingLayout.this, changePasswordLayout.class);
+                        startActivity(intent);
+                    }
+                });
             }
         });
     }

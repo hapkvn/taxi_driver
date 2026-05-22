@@ -16,6 +16,9 @@
         android:usesCleartextTraffic="true"
         tools:ignore="ExtraText">
         <activity
+            android:name=".MainMenu.changePasswordLayout"
+            android:exported="false"/>
+        <activity
             android:name=".admin.userDetail"
             android:exported="false" />
         <activity

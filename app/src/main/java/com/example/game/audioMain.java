@@ -1,13 +1,13 @@
 package com.example.game;
 
 import android.content.Context;
+import android.content.SharedPreferences; // Bổ sung thư viện này
 import android.media.AudioAttributes;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
 import java.util.HashMap;
 
 public class audioMain {
-    // 1. Sửa lỗi chính tả từ 'intantance' thành 'instance'
     private static audioMain instance;
     private SoundPool soundPool;
     private HashMap<String, Integer> soundMap;
@@ -32,14 +32,18 @@ public class audioMain {
     }
 
     private void loadAllSounds() {
-        // Đảm bảo bạn đã bỏ file fly.mp3 hoặc fly.wav vào thư mục res/raw nhé
         soundMap.put("fly", soundPool.load(context, R.raw.fly, 1));
-
-        // Bạn có thể thêm các âm thanh khác tại đây
-        // soundMap.put("click", soundPool.load(context, R.raw.click, 1));
     }
 
     public void playSound(String soundKey) {
+        // 1. KIỂM TRA CÀI ĐẶT TRƯỚC KHI PHÁT ÂM THANH HIỆU ỨNG (TIẾNG BAY)
+        SharedPreferences prefs = context.getSharedPreferences("login", Context.MODE_PRIVATE);
+        boolean isSoundOn = prefs.getBoolean("sound_on", true);
+
+        if (!isSoundOn) {
+            return; // Nếu đang tắt tiếng -> Chặn luôn, thoát hàm
+        }
+
         if (soundMap.containsKey(soundKey)) {
             Integer soundId = soundMap.get(soundKey);
             if (soundId != null) {
@@ -47,15 +51,25 @@ public class audioMain {
             }
         }
     }
+
     public void bgSoundStart(){
+        // 2. KIỂM TRA CÀI ĐẶT TRƯỚC KHI PHÁT NHẠC NỀN
+        SharedPreferences prefs = context.getSharedPreferences("login", Context.MODE_PRIVATE);
+        boolean isSoundOn = prefs.getBoolean("sound_on", true);
+
+        if (!isSoundOn) {
+            return; // Nếu đang tắt tiếng -> Chặn luôn nhạc nền, thoát hàm
+        }
+
         stopbg();
         bgSound = MediaPlayer.create(context, R.raw.background);
         if(bgSound !=null){
-                bgSound.setLooping(true);
-                bgSound.setVolume(0.5f, 0.5f);
-                bgSound.start();
+            bgSound.setLooping(true);
+            bgSound.setVolume(0.5f, 0.5f);
+            bgSound.start();
         }
     }
+
     public void stopbg(){
         if(bgSound !=null){
             if(bgSound.isPlaying()){
@@ -66,8 +80,6 @@ public class audioMain {
         }
     }
 
-
-    // 2. Sửa lỗi chính tả từ 'relase' thành 'release'
     public void release() {
         if (soundPool != null) {
             soundPool.release();

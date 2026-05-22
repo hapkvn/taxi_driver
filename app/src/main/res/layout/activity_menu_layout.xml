@@ -5,6 +5,92 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/loadingscreen"
     tools:context=".MainMenu.menuLayout">
+
+    <TextView
+        android:id="@+id/tvHighScoreLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="210dp"
+        android:text="ĐIỂM CAO NHẤT"
+        android:textColor="#CBD5E1"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvHighScoreValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:paddingHorizontal="24dp"
+        android:paddingVertical="2dp"
+        android:text="0"
+        android:textColor="#FFD700"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvHighScoreLabel" />
+
+    <Button
+        android:id="@+id/btnPlayGame"
+        android:layout_width="240dp"
+        android:layout_height="56dp"
+        android:backgroundTint="#FB4247"
+        android:text="Bắt đầu đua"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.58" />
+
+    <Button
+        android:id="@+id/btnLeaderboard"
+        android:layout_width="240dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#FB4247"
+        android:text="Bảng xếp hạng"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/btnPlayGame"
+        app:layout_constraintStart_toStartOf="@+id/btnPlayGame"
+        app:layout_constraintTop_toBottomOf="@+id/btnPlayGame" />
+
+    <Button
+        android:id="@+id/btnSetting"
+        android:layout_width="240dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#FB4247"
+        android:text="Cài đặt xe"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/btnLeaderboard"
+        app:layout_constraintStart_toStartOf="@+id/btnLeaderboard"
+        app:layout_constraintTop_toBottomOf="@+id/btnLeaderboard" />
+
+    <Button
+        android:id="@+id/btnLogout"
+        android:layout_width="240dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#1E293B"
+        android:text="Đăng xuất"
+        android:textColor="#CBD5E1"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/btnSetting"
+        app:layout_constraintStart_toStartOf="@+id/btnSetting"
+        app:layout_constraintTop_toBottomOf="@+id/btnSetting" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
