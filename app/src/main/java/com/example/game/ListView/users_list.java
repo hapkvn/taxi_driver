@@ -1,6 +1,11 @@
 package com.example.game.ListView;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import androidx.activity.EdgeToEdge;
@@ -10,13 +15,28 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.game.R;
+import com.example.game.admin.userDetail;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class users_list extends AppCompatActivity {
     adapter adapterr;
     ArrayList<listUser> listUsers;
     ListView lsUserView;
+    SharedPreferences preferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,17 +48,66 @@ public class users_list extends AppCompatActivity {
             return insets;
         });
 
-        listUsers =new ArrayList<>();
-        listUsers.add(new listUser("hoang","100"));
-        listUsers.add(new listUser("hoang","100"));
-        listUsers.add(new listUser("hoang","100"));
-        listUsers.add(new listUser("hoang","100"));
-        listUsers.add(new listUser("hoang","100"));
-        listUsers.add(new listUser("hoang","100"));
-        listUsers.add(new listUser("hoang","100"));
+        // 1. Ánh xạ ListView và khởi tạo mảng ngay từ đầu trên luồng chính
         lsUserView = findViewById(R.id.lstUser);
-        adapterr = new adapter(this, R.layout.layout_users, listUsers);
-        lsUserView.setAdapter(adapterr);
+        listUsers = new ArrayList<>();
+        preferences = getSharedPreferences("role", MODE_PRIVATE);
 
+        // 2. Cài đặt sự kiện Click ngay lập tức (ListView rỗng vẫn cài đặt Click được bình thường)
+        int role = preferences.getInt("checkRole", 0);
+        if(role == 1) {
+            lsUserView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    listUser listu = listUsers.get(position);
+                    Intent it = new Intent(users_list.this, userDetail.class);
+                    it.putExtra("detail_user", (Serializable) listu);
+                    startActivity(it);
+                }
+            });
+        }
+
+        // 3. Tiến hành gọi API
+        String url = "http://10.0.2.2/android_user_api/get_leaderboard.php";
+
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.execute(() -> {
+            OkHttpClient client = new OkHttpClient();
+            Request request = new Request.Builder().url(url).get().build();
+
+            try (Response response = client.newCall(request).execute()) {
+                if (response.isSuccessful() && response.body() != null) {
+                    String jsonResponse = response.body().string();
+                    Log.d("API_LEADERBOARD", "Dữ liệu: " + jsonResponse);
+
+                    try {
+                        JSONObject jsonObject = new JSONObject(jsonResponse);
+                        String status = jsonObject.getString("status");
+
+                        if (status.equals("success")) {
+                            JSONArray dataArray = jsonObject.getJSONArray("data");
+
+                            for (int i = 0; i < dataArray.length(); i++) {
+                                JSONObject row = dataArray.getJSONObject(i);
+                                String fullName = row.getString("full_name");
+                                int point = row.getInt("point");
+
+                                listUsers.add(new listUser(fullName, String.valueOf(point)));
+                            }
+
+                            // 4. CHÚ Ý: Bắt buộc phải cập nhật giao diện trên UI Thread
+                            runOnUiThread(() -> {
+                                adapterr = new adapter(users_list.this, R.layout.layout_users, listUsers);
+                                lsUserView.setAdapter(adapterr);
+                            });
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            } catch (IOException e) {
+                Log.e("API_ERROR", "Lỗi tải bảng xếp hạng: " + e.getMessage());
+            }
+        });
     }
 }

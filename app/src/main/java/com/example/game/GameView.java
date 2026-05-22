@@ -9,9 +9,13 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
+
+import com.example.game.ListView.updatePoint;
+
 import java.util.ArrayList;
 
 public class GameView extends View {
+    updatePoint updatePoint;
     private Bitmap playerCar, flyCar;
     private Bitmap[] enemyCarsArray;
     private ArrayList<Enemy> enemies;
@@ -40,6 +44,7 @@ public class GameView extends View {
     public interface GameOverListener { void onGameOver(); }
     private GameOverListener gameOverListener;
     private boolean isGameOverNotified = false;
+    SharedPreferences preferences;
 
     public void setGameOverListener(GameOverListener listener) {
         this.gameOverListener = listener;
@@ -110,7 +115,7 @@ public class GameView extends View {
             if (isMovingRight) { playerX += playerSpeedX; if (playerX > screenWidth - playerCar.getWidth()) playerX = screenWidth - playerCar.getWidth(); }
             if (isMovingUp) { playerY -= playerSpeedY; if (playerY < 0) playerY = 0; }
             if (isMovingDown) { playerY += playerSpeedY; if (playerY > screenHeight - playerCar.getHeight()) playerY = screenHeight - playerCar.getHeight(); }
-
+                int finalSoure =0;
             for (int i = 0; i < enemies.size(); i++) {
                 Enemy enemy = enemies.get(i);
                 enemy.y += enemy.speed;
@@ -141,6 +146,9 @@ public class GameView extends View {
 
                 canvas.drawBitmap(enemy.image, enemy.x, enemy.y, null);
             }
+            finalSoure = score;
+            String username = preferences.getString("userName", null);
+            updatePoint.updatePoint(username, finalSoure);
 
             if (isFlying) {
                 canvas.drawBitmap(flyCar, playerX, playerY, null);

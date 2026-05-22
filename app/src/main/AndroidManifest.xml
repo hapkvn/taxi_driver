@@ -16,12 +16,16 @@
         android:usesCleartextTraffic="true"
         tools:ignore="ExtraText">
         <activity
+            android:name=".admin.userDetail"
+            android:exported="false" />
+        <activity
             android:name=".ListView.users_list"
             android:exported="false" />
         <activity
             android:name=".admin.adminMemu"
             android:exported="false" />
-        <activity android:name=".MainMenu.settingLayout"
+        <activity
+            android:name=".MainMenu.settingLayout"
             android:allowEmbedded="false" />
         <activity
             android:name=".MainMenu.menuLayout"
@@ -41,7 +45,6 @@
         <activity
             android:name=".login.MainActivity"
             android:exported="true">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

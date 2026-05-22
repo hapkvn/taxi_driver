@@ -1,6 +1,7 @@
 package com.example.game.login;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -36,6 +37,7 @@ public class loginLayout extends AppCompatActivity {
     private static final String API_lOGIN_URL = "http://10.0.2.2/android_user_api/login.php";
     EditText txtuerName, txtPassword;
     Button btnLogin;
+    SharedPreferences preferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,10 +48,11 @@ public class loginLayout extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        preferences = getSharedPreferences("role", MODE_PRIVATE);
         txtuerName = findViewById(R.id.txtUser);
         txtPassword = findViewById(R.id.txtPass);
-
         btnLogin = findViewById(R.id.btnPlay);
+
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,6 +76,7 @@ public class loginLayout extends AppCompatActivity {
     }
     private void loginUer(String user, String password){
         ExecutorService executorService = Executors.newSingleThreadExecutor();
+        SharedPreferences.Editor editor = preferences.edit();
         executorService.execute(()->{
             OkHttpClient client = new OkHttpClient();
             RequestBody formBody = new FormBody.Builder()
@@ -96,9 +100,11 @@ public class loginLayout extends AppCompatActivity {
 
                         if(staus.equals("success")){
                             JSONObject userObj = jsonObject.getJSONObject("user");
-
+                            editor.putString("userName", user);
                             int role = userObj .getInt("role");
 
+                            editor.putInt("checkRole", role);
+                            editor.apply();
                             if(role ==1){
                                 Intent it = new Intent(loginLayout.this, adminMemu.class);
                                 startActivity(it);
