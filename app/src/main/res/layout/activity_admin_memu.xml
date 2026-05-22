@@ -11,7 +11,7 @@
     tools:context=".admin.adminMemu">
 
     <Button
-        android:id="@+id/btnPlay"
+        android:id="@+id/btnNewGame"
         android:layout_width="240dp"
         android:layout_height="56dp"
         android:text="Chơi mới"
@@ -26,7 +26,7 @@
         app:layout_constraintVertical_bias="0.55" />
 
     <Button
-        android:id="@+id/btnUsersAdmin"
+        android:id="@+id/btnRank"
         android:layout_width="240dp"
         android:layout_height="56dp"
         android:layout_marginTop="16dp"
@@ -35,9 +35,9 @@
         android:textStyle="bold"
         android:textColor="#FFFFFF"
         android:backgroundTint="#FB4247"
-        app:layout_constraintEnd_toEndOf="@+id/btnPlay"
-        app:layout_constraintStart_toStartOf="@+id/btnPlay"
-        app:layout_constraintTop_toBottomOf="@+id/btnPlay" />
+        app:layout_constraintEnd_toEndOf="@+id/btnNewGame"
+        app:layout_constraintStart_toStartOf="@+id/btnNewGame"
+        app:layout_constraintTop_toBottomOf="@+id/btnNewGame" />
 
     <Button
         android:id="@+id/btnSetting"
@@ -49,9 +49,9 @@
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/btnUsersAdmin"
+        app:layout_constraintEnd_toEndOf="@+id/btnRank"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/btnUsersAdmin"
-        app:layout_constraintTop_toBottomOf="@+id/btnUsersAdmin" />
+        app:layout_constraintStart_toStartOf="@+id/btnRank"
+        app:layout_constraintTop_toBottomOf="@+id/btnRank" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

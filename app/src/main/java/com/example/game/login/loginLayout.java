@@ -16,7 +16,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.game.MainScene;
+import com.example.game.MainMenu.menuLayout;
 import com.example.game.R;
 import com.example.game.admin.adminMemu;
 
@@ -51,14 +51,14 @@ public class loginLayout extends AppCompatActivity {
         preferences = getSharedPreferences("role", MODE_PRIVATE);
         txtuerName = findViewById(R.id.txtUser);
         txtPassword = findViewById(R.id.txtPass);
-        btnLogin = findViewById(R.id.btnPlay);
+        btnLogin = findViewById(R.id.btnNewGame);
 
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String user_name = txtuerName.getText().toString();
-                String password = txtPassword.getText().toString();
+                String user_name = txtuerName.getText().toString().trim();
+                String password = txtPassword.getText().toString().trim();
 
                 if(user_name.isEmpty() || password.isEmpty()){
                     AlertDialog.Builder builder = new AlertDialog.Builder(loginLayout.this);
@@ -70,6 +70,7 @@ public class loginLayout extends AppCompatActivity {
                     return;
                 }else{
                     loginUer(user_name, password);
+
                 }
             }
         });
@@ -77,52 +78,62 @@ public class loginLayout extends AppCompatActivity {
     private void loginUer(String user, String password){
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         SharedPreferences.Editor editor = preferences.edit();
-        executorService.execute(()->{
+
+        executorService.execute(() -> {
             OkHttpClient client = new OkHttpClient();
             RequestBody formBody = new FormBody.Builder()
-                    .add("user_name", user )
+                    .add("user_name", user)
                     .add("password", password)
                     .build();
             Request request = new Request.Builder()
                     .url(API_lOGIN_URL)
                     .post(formBody)
                     .build();
-            try(Response response = client.newCall(request).execute()){
-                if(response.isSuccessful() && response.body() != null){
+
+            try (Response response = client.newCall(request).execute()) {
+                if (response.isSuccessful() && response.body() != null) {
                     String jsonResponse = response.body().string();
                     Log.d("API_RESULT", jsonResponse);
 
-                    runOnUiThread(()->{});
-                    try{
-                        JSONObject jsonObject = new JSONObject(jsonResponse);
-                        String staus = jsonObject.getString("staus");
-                        String message = jsonObject.getString("message");
+                    // ĐÃ SỬA: Đưa toàn bộ logic hiển thị và chuyển màn hình vào trong runOnUiThread
+                    runOnUiThread(() -> {
+                        try {
+                            JSONObject jsonObject = new JSONObject(jsonResponse);
 
-                        if(staus.equals("success")){
-                            JSONObject userObj = jsonObject.getJSONObject("user");
-                            editor.putString("userName", user);
-                            int role = userObj .getInt("role");
+                            // ĐÃ SỬA TYPO: "staus" -> "status" để trùng khớp với API PHP
+                            String status = jsonObject.getString("status");
+                            String message = jsonObject.getString("message");
 
-                            editor.putInt("checkRole", role);
-                            editor.apply();
-                            if(role ==1){
-                                Intent it = new Intent(loginLayout.this, adminMemu.class);
-                                startActivity(it);
-                            }else{
-                                Intent it = new Intent(loginLayout.this, MainScene.class);
-                                startActivity(it);
+                            if (status.equals("success")) {
+                                JSONObject userObj = jsonObject.getJSONObject("user");
+                                editor.putString("userName", user);
+                                int role = userObj.getInt("role");
+
+                                editor.putInt("checkRole", role);
+                                editor.apply();
+
+                                Toast.makeText(loginLayout.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
+
+                                if (role == 1) {
+                                    Intent it = new Intent(loginLayout.this, adminMemu.class);
+                                    startActivity(it);
+                                } else {
+                                    Intent it = new Intent(loginLayout.this, menuLayout.class);
+                                    startActivity(it);
+                                }
+                                finish(); // Đóng hẳn màn hình loginLayout
+
+                            } else {
+                                Toast.makeText(loginLayout.this, message, Toast.LENGTH_LONG).show();
                             }
-
-                        }else{
-                            Toast.makeText(loginLayout.this, message, Toast.LENGTH_LONG).show();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Toast.makeText(loginLayout.this, "Lỗi đọc dữ liệu JSON từ Server", Toast.LENGTH_LONG).show();
                         }
-                    }catch (JSONException e){
-                        e.printStackTrace();
-                        Toast.makeText(loginLayout.this, "Lỗi đọc dữ liệu từ Server ", Toast.LENGTH_LONG).show();
-                    }
+                    });
                 }
             } catch (IOException e) {
-                runOnUiThread(()->
+                runOnUiThread(() ->
                         Toast.makeText(loginLayout.this, "Không thể kết nối đến Server", Toast.LENGTH_LONG).show());
             }
         });

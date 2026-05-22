@@ -15,7 +15,9 @@ import com.example.game.ListView.updatePoint;
 import java.util.ArrayList;
 
 public class GameView extends View {
-    updatePoint updatePoint;
+    // Đối tượng gọi API cập nhật điểm
+    private updatePoint apiUpdatePoint;
+
     private Bitmap playerCar, flyCar;
     private Bitmap[] enemyCarsArray;
     private ArrayList<Enemy> enemies;
@@ -24,7 +26,10 @@ public class GameView extends View {
     private int playerX, playerY;
     private int score = 0;
 
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
     private int baseSpeed;
     private int screenWidth, screenHeight;
     private boolean isGameOver = false;
@@ -44,7 +49,10 @@ public class GameView extends View {
     public interface GameOverListener { void onGameOver(); }
     private GameOverListener gameOverListener;
     private boolean isGameOverNotified = false;
-    SharedPreferences preferences;
+
+    // Quản lý dữ liệu cục bộ (Lưu tên user và cài đặt xe/độ khó)
+    private SharedPreferences preferencesRole;
+    private SharedPreferences preferencesLogin;
 
     public void setGameOverListener(GameOverListener listener) {
         this.gameOverListener = listener;
@@ -52,8 +60,21 @@ public class GameView extends View {
 
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
+<<<<<<< Updated upstream
         SharedPreferences prefs = context.getSharedPreferences("login", Context.MODE_PRIVATE);
         String selectedCar = prefs.getString("selected_car", "sport");
+=======
+
+        // 1. KHỞI TẠO CÁC ĐỐI TƯỢNG (Chống lỗi văng app NullPointerException)
+        apiUpdatePoint = new updatePoint();
+        // Lấy tên User đã đăng nhập từ file "role"
+        preferencesRole = context.getSharedPreferences("role", Context.MODE_PRIVATE);
+        // Lấy cài đặt xe và độ khó từ file "login"
+        preferencesLogin = context.getSharedPreferences("login", Context.MODE_PRIVATE);
+
+        // 2. TẢI HÌNH ẢNH XE NGƯỜI CHƠI
+        String selectedCar = preferencesLogin.getString("selected_car", "blue");
+>>>>>>> Stashed changes
         int carRes;
         int flyCarRes;
         switch (selectedCar) {
@@ -78,26 +99,39 @@ public class GameView extends View {
         }
         playerCar = BitmapFactory.decodeResource(getResources(), carRes);
 
+<<<<<<< Updated upstream
 
 
         int difficulty = prefs.getInt("difficulty", 0);
+=======
+        // 3. THIẾT LẬP ĐỘ KHÓ
+        int difficulty = preferencesLogin.getInt("difficulty", 0);
+>>>>>>> Stashed changes
         switch (difficulty) {
             case 1:  baseSpeed = 13; break;
             case 2:  baseSpeed = 17; break;
             default: baseSpeed = 8;  break;
         }
+<<<<<<< Updated upstream
         flyCar = BitmapFactory.decodeResource(getResources(), flyCarRes);
+=======
 
+        flyCar = BitmapFactory.decodeResource(getResources(), R.drawable.flycar);
+>>>>>>> Stashed changes
+
+        // 4. TẢI HÌNH ẢNH XE ĐỊCH
         enemyCarsArray = new Bitmap[]{
                 BitmapFactory.decodeResource(getResources(), R.drawable.bluecar),
                 BitmapFactory.decodeResource(getResources(), R.drawable.yellowcar),
                 BitmapFactory.decodeResource(getResources(), R.drawable.truck)
         };
 
+        // 5. CẤU HÌNH VẼ ĐIỂM SỐ
         scorePaint = new Paint();
         scorePaint.setColor(Color.WHITE);
         scorePaint.setTextSize(60);
         scorePaint.setFakeBoldText(true);
+
         enemies = new ArrayList<>();
     }
 
@@ -110,12 +144,11 @@ public class GameView extends View {
         playerX = (screenWidth / 2) - (playerCar.getWidth() / 2);
         playerY = screenHeight - playerCar.getHeight() - 100;
 
-        // THIẾT LẬP KHOẢNG CÁCH LÚC MỚI VÀO GAME
+        // THIẾT LẬP KHOẢNG CÁCH XE ĐỊCH LÚC MỚI VÀO GAME
         if (enemies.isEmpty()) {
             for (int i = 0; i < ENEMY_COUNT; i++) {
                 Enemy enemy = new Enemy(enemyCarsArray, screenWidth, screenHeight);
-                // i * 800 giúp: Xe 1 ở 0px, Xe 2 bị đẩy lên 800px, Xe 3 bị đẩy lên 1600px
-                // Màn hình sẽ có các xe nối đuôi nhau rơi xuống rất đều
+                // i * 800 giúp các xe rơi xuống nối đuôi nhau đều đặn
                 enemy.resetPosition(baseSpeed, i * 800);
                 enemies.add(enemy);
             }
@@ -127,41 +160,56 @@ public class GameView extends View {
         super.onDraw(canvas);
 
         if (!isGameOver) {
+            // --- CẬP NHẬT VỊ TRÍ NGƯỜI CHƠI ---
             if (isMovingLeft) { playerX -= playerSpeedX; if (playerX < 0) playerX = 0; }
             if (isMovingRight) { playerX += playerSpeedX; if (playerX > screenWidth - playerCar.getWidth()) playerX = screenWidth - playerCar.getWidth(); }
             if (isMovingUp) { playerY -= playerSpeedY; if (playerY < 0) playerY = 0; }
             if (isMovingDown) { playerY += playerSpeedY; if (playerY > screenHeight - playerCar.getHeight()) playerY = screenHeight - playerCar.getHeight(); }
-                int finalSoure =0;
+
+            // --- XỬ LÝ XE ĐỊCH & VA CHẠM ---
             for (int i = 0; i < enemies.size(); i++) {
                 Enemy enemy = enemies.get(i);
                 enemy.y += enemy.speed;
 
+                // Nếu xe địch lọt qua khỏi màn hình (người chơi né thành công)
                 if (enemy.y > screenHeight) {
                     score++;
-                    // Điều chỉnh độ khó
-                    int diff = getContext().getSharedPreferences("login", Context.MODE_PRIVATE).getInt("difficulty", 0);
+
+                    // Điều chỉnh tăng tốc độ rơi của xe địch để game khó dần
+                    int diff = preferencesLogin.getInt("difficulty", 0);
                     int minSpeed = (diff == 2) ? 17 : (diff == 1) ? 13 : 8;
                     baseSpeed = minSpeed + (score / 10);
 
-                    // Khi một xe chạy qua màn hình, đẩy nó lên tít trên đỉnh (cách ít nhất 500px) để tạo khe hở
+                    // Đẩy xe địch lên lại trên cùng (cách mép trên 500px)
                     enemy.resetPosition(baseSpeed, 500);
                 }
 
+                // Xử lý va chạm (Chỉ bắt va chạm nếu KHÔNG đang dùng kỹ năng nhảy/bay)
                 if (!isFlying) {
                     boolean isCrashX = playerX < enemy.x + enemy.image.getWidth() && playerX + playerCar.getWidth() > enemy.x;
                     boolean isCrashY = playerY < enemy.y + enemy.image.getHeight() && playerY + playerCar.getHeight() > enemy.y;
 
+                    // Nếu tông trúng xe địch (GAME OVER)
                     if (isCrashX && isCrashY) {
                         isGameOver = true;
+
                         if (gameOverListener != null && !isGameOverNotified) {
-                            gameOverListener.onGameOver();
+                            gameOverListener.onGameOver(); // Báo ra MainScene để hiện menu thua cuộc
                             isGameOverNotified = true;
+
+                            // GỬI ĐIỂM LÊN SERVER NGAY KHOẢNH KHẮC CHẾT (Chạy 1 lần duy nhất)
+                            String username = preferencesRole.getString("userName", "");
+                            if (!username.isEmpty()) {
+                                apiUpdatePoint.updatePoint(username, score);
+                            }
                         }
                     }
                 }
 
+                // Vẽ xe địch ra màn hình
                 canvas.drawBitmap(enemy.image, enemy.x, enemy.y, null);
             }
+<<<<<<< Updated upstream
             finalSoure = score;
             SharedPreferences prefs = getContext().getSharedPreferences("login", Context.MODE_PRIVATE);
             String username = prefs.getString("userName", "Guest"); // Thêm giá trị mặc định là "Guest"
@@ -173,27 +221,42 @@ public class GameView extends View {
 
 
             }
+=======
+>>>>>>> Stashed changes
 
+            // --- VẼ XE NGƯỜI CHƠI ---
             if (isFlying) {
+                // Đổi hình ảnh sang xe đang bay
                 canvas.drawBitmap(flyCar, playerX, playerY, null);
                 flyTimer--;
-                if (flyTimer <= 0) isFlying = false;
+                if (flyTimer <= 0) isFlying = false; // Hết thời gian bay, rơi xuống lại
             } else {
                 canvas.drawBitmap(playerCar, playerX, playerY, null);
             }
 
+            // Vẽ điểm số hiện tại ở góc trái màn hình
             canvas.drawText("SCORE: " + score, 50, 100, scorePaint);
+
+            // Gọi lại onDraw liên tục (để tạo hiệu ứng chuyển động hình ảnh 60 FPS)
             invalidate();
 
         } else {
+<<<<<<< Updated upstream
             // Vẽ lại toàn bộ xe trên màn hình lúc chết để làm nền
+=======
+            // --- KHI GAME OVER (Dừng khung hình) ---
+>>>>>>> Stashed changes
             for (Enemy enemy : enemies) {
                 canvas.drawBitmap(enemy.image, enemy.x, enemy.y, null);
             }
             canvas.drawBitmap(playerCar, playerX, playerY, null);
 
+<<<<<<< Updated upstream
             // 1. CĂN GIỮA VÀ ĐẨY CHỮ GAME OVER LÊN TRÊN
             scorePaint.setTextAlign(Paint.Align.CENTER); // Tự động căn giữa trục X
+=======
+            // In chữ GAME OVER đỏ chót ở giữa màn hình
+>>>>>>> Stashed changes
             scorePaint.setColor(Color.RED);
             scorePaint.setTextSize(90); // Chữ to và ngầu hơn
             scorePaint.setFakeBoldText(true);
@@ -216,9 +279,17 @@ public class GameView extends View {
         }
     }
 
+    // --- CÁC HÀM ĐIỀU KHIỂN ĐƯỢC GỌI TỪ MAINSCENE ---
     public void setMovingLeft(boolean isMoving) { this.isMovingLeft = isMoving; }
     public void setMovingRight(boolean isMoving) { this.isMovingRight = isMoving; }
     public void setMovingUp(boolean isMoving) { this.isMovingUp = isMoving; }
     public void setMovingDown(boolean isMoving) { this.isMovingDown = isMoving; }
-    public void triggerJump() { if (!isGameOver && !isFlying) { isFlying = true; flyTimer = MAX_FLY_TIME; } }
+
+    // Hàm kích hoạt nhảy/bay khi bấm nút
+    public void triggerJump() {
+        if (!isGameOver && !isFlying) {
+            isFlying = true;
+            flyTimer = MAX_FLY_TIME;
+        }
+    }
 }
