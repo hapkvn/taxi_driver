@@ -59,14 +59,18 @@ public class menuLayout extends AppCompatActivity {
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences preferences = getSharedPreferences("role", MODE_PRIVATE);
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.clear(); // Xóa sạch dữ liệu user hiện tại
-                editor.apply();
+                // 1. Xóa dữ liệu role
+                SharedPreferences prefRole = getSharedPreferences("role", MODE_PRIVATE);
+                prefRole.edit().clear().apply();
 
-                // Lùi về màn hình đăng nhập ban đầu
+                // 2. QUAN TRỌNG: Xóa trạng thái đăng nhập trong file "login"
+                SharedPreferences prefLogin = getSharedPreferences("login", MODE_PRIVATE);
+                prefLogin.edit().clear().apply();
+
+                // 3. Điều hướng về màn hình chính
                 Intent intent = new Intent(menuLayout.this, MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // Xóa lịch sử trang để không bấm Back lùi lại menu được
+                // Xóa sạch ngăn xếp Activity để người dùng không thể nhấn Back quay lại menu
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 finish();
             }

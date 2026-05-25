@@ -17,19 +17,21 @@
     import com.example.game.MainMenu.settingLayout;
     import com.example.game.MainMenu.menuLayout;
     import com.example.game.R;
-
+    import com.example.game.admin.adminMemu;
 
 
     public class MainActivity extends AppCompatActivity {
         Button btnlogin, btnResign;
         SharedPreferences preferences;
+        SharedPreferences preferencesRole;
+
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             EdgeToEdge.enable(this);
             setContentView(R.layout.activity_main);
-            Intent testGame = new Intent(MainActivity.this, menuLayout.class);
-            startActivity(testGame);
+//            Intent testGame = new Intent(MainActivity.this, MainScene.class);
+//            startActivity(testGame);
             ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
                 Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
                 v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -38,13 +40,21 @@
             btnlogin = findViewById(R.id.btnlogin);
             btnResign = findViewById(R.id.btnResign);
             preferences = getSharedPreferences("login", MODE_PRIVATE);
+            preferencesRole = getSharedPreferences("role", MODE_PRIVATE);
             boolean logined = preferences.getBoolean("lged", false);
-
-            if(logined){
-                Intent it = new Intent(MainActivity.this,menuLayout.class);
-                startActivity(it);
-                finish();
-                return;
+            int role = preferencesRole.getInt("checkRole", 0);
+            if (logined){
+                if(role ==1){
+                    Intent it = new Intent(MainActivity.this, adminMemu.class);
+                    startActivity(it);
+                    finish();
+                    return;
+                }else{
+                    Intent it = new Intent(MainActivity.this, menuLayout.class);
+                    startActivity(it);
+                    finish();
+                    return;
+                }
             }
             btnlogin.setOnClickListener(new View.OnClickListener() {
                 @Override

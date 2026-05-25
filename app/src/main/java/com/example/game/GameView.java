@@ -15,7 +15,7 @@ import com.example.game.ListView.updatePoint;
 import java.util.ArrayList;
 
 public class GameView extends View {
-    updatePoint updatePoint;
+    updatePoint updatePoint = new updatePoint();
     private Bitmap playerCar, flyCar;
     private Bitmap[] enemyCarsArray;
     private ArrayList<Enemy> enemies;
@@ -44,7 +44,7 @@ public class GameView extends View {
     public interface GameOverListener { void onGameOver(); }
     private GameOverListener gameOverListener;
     private boolean isGameOverNotified = false;
-    SharedPreferences preferences;
+    SharedPreferences upPointPre;
 
     public void setGameOverListener(GameOverListener listener) {
         this.gameOverListener = listener;
@@ -53,6 +53,7 @@ public class GameView extends View {
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
         SharedPreferences prefs = context.getSharedPreferences("login", Context.MODE_PRIVATE);
+        upPointPre = context.getSharedPreferences("role", Context.MODE_PRIVATE);
         String selectedCar = prefs.getString("selected_car", "sport");
         int carRes;
         int flyCarRes;
@@ -131,7 +132,9 @@ public class GameView extends View {
             if (isMovingRight) { playerX += playerSpeedX; if (playerX > screenWidth - playerCar.getWidth()) playerX = screenWidth - playerCar.getWidth(); }
             if (isMovingUp) { playerY -= playerSpeedY; if (playerY < 0) playerY = 0; }
             if (isMovingDown) { playerY += playerSpeedY; if (playerY > screenHeight - playerCar.getHeight()) playerY = screenHeight - playerCar.getHeight(); }
-                int finalSoure =0;
+
+            // XÓA: int finalSoure = 0; (Đã bỏ đi vì không cần thiết)
+
             for (int i = 0; i < enemies.size(); i++) {
                 Enemy enemy = enemies.get(i);
                 enemy.y += enemy.speed;
@@ -154,6 +157,17 @@ public class GameView extends View {
                     if (isCrashX && isCrashY) {
                         isGameOver = true;
                         if (gameOverListener != null && !isGameOverNotified) {
+
+                            // [ĐOẠN SỬA LỖI ĐIỂM] - Gọi cập nhật điểm ĐÚNG 1 LẦN khi vừa tông xe
+                            SharedPreferences prefRole = getContext().getSharedPreferences("role", Context.MODE_PRIVATE);
+                            String username = prefRole.getString("userName", "");
+
+                            if (!username.isEmpty()) {
+                                updatePoint apiUpdate = new updatePoint(); // Khởi tạo biến
+                                apiUpdate.updatePoint(username, score);    // Gửi điểm thật (score)
+                            }
+                            // -----------------------------------------------------------------
+
                             gameOverListener.onGameOver();
                             isGameOverNotified = true;
                         }
@@ -162,17 +176,8 @@ public class GameView extends View {
 
                 canvas.drawBitmap(enemy.image, enemy.x, enemy.y, null);
             }
-            finalSoure = score;
-            SharedPreferences prefs = getContext().getSharedPreferences("login", Context.MODE_PRIVATE);
-            String username = prefs.getString("userName", "Guest"); // Thêm giá trị mặc định là "Guest"
 
-
-            if (this.updatePoint != null && username != null) {
-                this.updatePoint.updatePoint(username, finalSoure);
-            } else {
-
-
-            }
+            // XÓA: Toàn bộ đoạn gọi API check liên tục ở giữa vòng lặp vẽ
 
             if (isFlying) {
                 canvas.drawBitmap(flyCar, playerX, playerY, null);

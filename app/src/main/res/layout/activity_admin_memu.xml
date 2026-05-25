@@ -11,7 +11,7 @@
     tools:context=".admin.adminMemu">
 
     <Button
-        android:id="@+id/btnPlay"
+        android:id="@+id/btnPlayAdmin"
         android:layout_width="240dp"
         android:layout_height="56dp"
         android:text="Chơi mới"
@@ -35,12 +35,12 @@
         android:textStyle="bold"
         android:textColor="#FFFFFF"
         android:backgroundTint="#FB4247"
-        app:layout_constraintEnd_toEndOf="@+id/btnPlay"
-        app:layout_constraintStart_toStartOf="@+id/btnPlay"
-        app:layout_constraintTop_toBottomOf="@+id/btnPlay" />
+        app:layout_constraintEnd_toEndOf="@+id/btnPlayAdmin"
+        app:layout_constraintStart_toStartOf="@+id/btnPlayAdmin"
+        app:layout_constraintTop_toBottomOf="@+id/btnPlayAdmin" />
 
     <Button
-        android:id="@+id/btnSetting"
+        android:id="@+id/btnSettingAdmin"
         android:layout_width="240dp"
         android:layout_height="56dp"
         android:layout_marginTop="16dp"
@@ -53,5 +53,18 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/btnUsersAdmin"
         app:layout_constraintTop_toBottomOf="@+id/btnUsersAdmin" />
+    <Button
+        android:id="@+id/btnLogoutAdmin"
+        android:layout_width="240dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#1E293B"
+        android:text="Đăng xuất"
+        android:textColor="#CBD5E1"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/btnSettingAdmin"
+        app:layout_constraintStart_toStartOf="@+id/btnSettingAdmin"
+        app:layout_constraintTop_toBottomOf="@+id/btnSettingAdmin" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
