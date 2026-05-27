@@ -53,7 +53,6 @@ public class users_list extends AppCompatActivity {
         listUsers = new ArrayList<>();
         preferences = getSharedPreferences("role", MODE_PRIVATE);
 
-        // 2. Cài đặt sự kiện Click ngay lập tức (ListView rỗng vẫn cài đặt Click được bình thường)
         int role = preferences.getInt("checkRole", 0);
         if(role == 1) {
             lsUserView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -89,11 +88,10 @@ public class users_list extends AppCompatActivity {
 
                             for (int i = 0; i < dataArray.length(); i++) {
                                 JSONObject row = dataArray.getJSONObject(i);
+                                String userName = row.getString("user_name"); // Lấy thêm dòng này
                                 String fullName = row.getString("full_name");
                                 int point = row.getInt("point");
-                                if(point >0){
-                                    listUsers.add(new listUser(fullName, String.valueOf(point)));
-                                }
+                                listUsers.add(new listUser(userName, fullName, String.valueOf(point)));
                             }
 
                             runOnUiThread(() -> {

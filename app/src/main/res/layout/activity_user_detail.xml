@@ -60,7 +60,7 @@
         android:layout_marginTop="16dp"
         android:background="#1E293B"
         android:hint="Điểm số"
-        android:inputType="textPassword"
+        android:inputType="text"
         android:paddingHorizontal="20dp"
         android:textColor="#FFFFFF"
         android:textColorHint="#94A3B8"
