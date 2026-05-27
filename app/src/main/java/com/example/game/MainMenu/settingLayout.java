@@ -12,7 +12,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 
-import com.example.game.MainScene;
 import com.example.game.R;
 
 public class settingLayout extends AppCompatActivity {
@@ -53,6 +52,7 @@ public class settingLayout extends AppCompatActivity {
         boolean soundOn = prefs.getBoolean("sound_on", true);
         switchSound.setChecked(soundOn);
 
+        // Nút Quay lại - giữ nguyên như cũ
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,15 +74,11 @@ public class settingLayout extends AppCompatActivity {
                 editor.apply();
 
                 Toast.makeText(settingLayout.this, "Đã lưu cài đặt!", Toast.LENGTH_SHORT).show();
-
-                // Mở thẳng vào game để kiểm tra xe
-                android.content.Intent intent = new android.content.Intent(settingLayout.this, MainScene.class);
-                startActivity(intent);
                 finish();
             }
         });
 
-        // Nút đổi mật khẩu
+        // Nút đổi mật khẩu - đã sửa bỏ lồng OnClickListener
         btnChangePass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
