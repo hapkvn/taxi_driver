@@ -78,7 +78,6 @@ public class loginLayout extends AppCompatActivity {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         SharedPreferences prefRole = getSharedPreferences("role", MODE_PRIVATE);
         SharedPreferences prefLogin = getSharedPreferences("login", MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
 
         executorService.execute(() -> {
 
@@ -104,7 +103,6 @@ public class loginLayout extends AppCompatActivity {
                     runOnUiThread(() -> {
 
                         try{
-
                             JSONObject jsonObject = new JSONObject(jsonResponse);
                             String staus = jsonObject.getString("status");
                             String message = jsonObject.getString("message");
@@ -112,11 +110,17 @@ public class loginLayout extends AppCompatActivity {
                             if(staus.equals("success")){
 
                                 JSONObject userObj = jsonObject.getJSONObject("user");
-                                int role = userObj.getInt("role");
 
-                                // 1. Lưu Role
+                                // --- BỔ SUNG LẤY THÊM DỮ LIỆU TỪ DATABASE ---
+                                int role = userObj.getInt("role");
+                                int point = userObj.getInt("point"); // Lấy điểm kỷ lục
+                                String fullName = userObj.getString("full_name"); // Lấy tên hiển thị
+
+                                // 1. Lưu Role và Toàn bộ thông tin cơ bản
                                 SharedPreferences.Editor editorRole = prefRole.edit();
                                 editorRole.putString("userName", user);
+                                editorRole.putString("fullName", fullName); // Lưu tên
+                                editorRole.putInt("point", point); // Lưu điểm số
                                 editorRole.putInt("checkRole", role);
                                 editorRole.apply();
 
@@ -126,63 +130,33 @@ public class loginLayout extends AppCompatActivity {
                                 editorLogin.apply();
 
                                 if(role == 1){
-
                                     Intent it = new Intent(loginLayout.this, adminMemu.class);
                                     startActivity(it);
-
-                                    Toast.makeText(
-                                            loginLayout.this,
-                                            "Đăng nhập thành công admin" + user,
-                                            Toast.LENGTH_LONG
-                                    ).show();
-
+                                    Toast.makeText(loginLayout.this, "Xin chào Admin: " + fullName, Toast.LENGTH_LONG).show();
                                 }else{
-
                                     Intent it = new Intent(loginLayout.this, menuLayout.class);
                                     startActivity(it);
-
-                                    Toast.makeText(
-                                            loginLayout.this,
-                                            "Đăng nhập thành công" + user,
-                                            Toast.LENGTH_LONG
-                                    ).show();
+                                    Toast.makeText(loginLayout.this, "Đăng nhập thành công! Chào " + fullName, Toast.LENGTH_LONG).show();
                                 }
 
                                 finish();
 
                             }else{
-
-                                Toast.makeText(
-                                        loginLayout.this,
-                                        message,
-                                        Toast.LENGTH_LONG
-                                ).show();
+                                Toast.makeText(loginLayout.this, message, Toast.LENGTH_LONG).show();
                             }
 
                         }catch (JSONException e){
-
                             e.printStackTrace();
-
-                            Toast.makeText(
-                                    loginLayout.this,
-                                    "Lỗi đọc dữ liệu từ Server",
-                                    Toast.LENGTH_LONG
-                            ).show();
+                            Toast.makeText(loginLayout.this, "Lỗi đọc dữ liệu từ Server", Toast.LENGTH_LONG).show();
                         }
                     });
-
                 }
-
             } catch (IOException e) {
-
                 runOnUiThread(() ->
-                        Toast.makeText(
-                                loginLayout.this,
-                                "Không thể kết nối đến Server",
-                                Toast.LENGTH_LONG
-                        ).show()
+                        Toast.makeText(loginLayout.this, "Không thể kết nối đến Server", Toast.LENGTH_LONG).show()
                 );
             }
         });
     }
+
 }

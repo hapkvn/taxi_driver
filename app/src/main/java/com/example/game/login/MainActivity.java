@@ -12,6 +12,7 @@
     import androidx.core.view.ViewCompat;
     import androidx.core.view.WindowInsetsCompat;
 
+    import com.example.game.GameView;
     import com.example.game.ListView.users_list;
     import com.example.game.MainScene;
     import com.example.game.MainMenu.settingLayout;
@@ -30,8 +31,7 @@
             super.onCreate(savedInstanceState);
             EdgeToEdge.enable(this);
             setContentView(R.layout.activity_main);
-           Intent testGame = new Intent(MainActivity.this, settingLayout.class);
-                startActivity(testGame);
+
             ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
                 Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
                 v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);

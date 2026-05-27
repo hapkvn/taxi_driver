@@ -41,8 +41,8 @@
         android:layout_width="280dp"
         android:layout_height="56dp"
         android:layout_marginTop="8dp"
-        android:background="#7A88A4"
-        android:popupBackground="#7A88A4" />
+        android:background="#BDCFED"
+        android:popupBackground="#BDCFED" />
 
     <TextView
         android:layout_width="280dp"

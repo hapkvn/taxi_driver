@@ -158,13 +158,21 @@ public class GameView extends View {
                         isGameOver = true;
                         if (gameOverListener != null && !isGameOverNotified) {
 
-                            // [ĐOẠN SỬA LỖI ĐIỂM] - Gọi cập nhật điểm ĐÚNG 1 LẦN khi vừa tông xe
+                            // [ĐOẠN SỬA LỖI ĐIỂM]
                             SharedPreferences prefRole = getContext().getSharedPreferences("role", Context.MODE_PRIVATE);
                             String username = prefRole.getString("userName", "");
+                            int oldHighScore = prefRole.getInt("point", 0);
+
+                            // KIỂM TRA & CẬP NHẬT KÉT SẮT NẾU VƯỢT KỶ LỤC
+                            if (score > oldHighScore) {
+                                SharedPreferences.Editor editor = prefRole.edit();
+                                editor.putInt("point", score);
+                                editor.apply();
+                            }
 
                             if (!username.isEmpty()) {
                                 updatePoint apiUpdate = new updatePoint(); // Khởi tạo biến
-                                apiUpdate.updatePoint(username, score);   // Gửi điểm thật (score)
+                                apiUpdate.updatePoint(username, score);   // Gửi điểm thật (score) lên Server
                             }
                             // -----------------------------------------------------------------
 
