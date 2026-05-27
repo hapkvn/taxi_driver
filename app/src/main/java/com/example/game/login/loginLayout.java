@@ -17,7 +17,6 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.game.MainMenu.menuLayout;
-import com.example.game.MainScene;
 import com.example.game.R;
 import com.example.game.admin.adminMemu;
 
@@ -50,8 +49,8 @@ public class loginLayout extends AppCompatActivity {
             return insets;
         });
         preferences = getSharedPreferences("role", MODE_PRIVATE);
-        txtuerName = findViewById(R.id.txtUser);
-        txtPassword = findViewById(R.id.txtPass);
+        txtuerName = findViewById(R.id.txtUserDetail);
+        txtPassword = findViewById(R.id.txtPointDetail);
         btnLogin = findViewById(R.id.btnLoginMain);
 
 

@@ -33,7 +33,7 @@
         app:layout_constraintTop_toBottomOf="@+id/gametitle" />
 
     <EditText
-        android:id="@+id/txtUser"
+        android:id="@+id/txtUserDetail"
         android:layout_width="0dp"
         android:layout_height="56dp"
         android:layout_marginTop="32dp"
@@ -49,7 +49,7 @@
         app:layout_constraintWidth_percent="0.85" />
 
     <EditText
-        android:id="@+id/txtName"
+        android:id="@+id/txtNameDetail"
         android:layout_width="0dp"
         android:layout_height="56dp"
         android:layout_marginTop="16dp"
@@ -61,11 +61,11 @@
         android:textColorHint="#94A3B8"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtUser"
+        app:layout_constraintTop_toBottomOf="@+id/txtUserDetail"
         app:layout_constraintWidth_percent="0.85" />
 
     <EditText
-        android:id="@+id/txtPass"
+        android:id="@+id/txtPointDetail"
         android:layout_width="0dp"
         android:layout_height="56dp"
         android:layout_marginTop="16dp"
@@ -77,7 +77,7 @@
         android:textColorHint="#94A3B8"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtName"
+        app:layout_constraintTop_toBottomOf="@+id/txtNameDetail"
         app:layout_constraintWidth_percent="0.85" />
 
     <EditText
@@ -93,11 +93,11 @@
         android:textColorHint="#94A3B8"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtPass"
+        app:layout_constraintTop_toBottomOf="@+id/txtPointDetail"
         app:layout_constraintWidth_percent="0.85" />
 
     <Button
-        android:id="@+id/btnUsersAdmin"
+        android:id="@+id/btnChange"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginTop="32dp"

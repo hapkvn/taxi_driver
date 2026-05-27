@@ -164,7 +164,7 @@ public class GameView extends View {
 
                             if (!username.isEmpty()) {
                                 updatePoint apiUpdate = new updatePoint(); // Khởi tạo biến
-                                apiUpdate.updatePoint(username, score);    // Gửi điểm thật (score)
+                                apiUpdate.updatePoint(username, score);   // Gửi điểm thật (score)
                             }
                             // -----------------------------------------------------------------
 

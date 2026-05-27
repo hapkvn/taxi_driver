@@ -91,11 +91,11 @@ public class users_list extends AppCompatActivity {
                                 JSONObject row = dataArray.getJSONObject(i);
                                 String fullName = row.getString("full_name");
                                 int point = row.getInt("point");
-
-                                listUsers.add(new listUser(fullName, String.valueOf(point)));
+                                if(point >0){
+                                    listUsers.add(new listUser(fullName, String.valueOf(point)));
+                                }
                             }
 
-                            // 4. CHÚ Ý: Bắt buộc phải cập nhật giao diện trên UI Thread
                             runOnUiThread(() -> {
                                 adapterr = new adapter(users_list.this, R.layout.layout_users, listUsers);
                                 lsUserView.setAdapter(adapterr);

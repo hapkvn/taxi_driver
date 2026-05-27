@@ -12,7 +12,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.game.MainMenu.menuLayout;
+import com.example.game.ListView.users_list;
+import com.example.game.MainMenu.settingLayout;
 import com.example.game.MainScene;
 import com.example.game.R;
 import com.example.game.login.MainActivity;
@@ -30,7 +31,7 @@ public class adminMemu extends AppCompatActivity {
             return insets;
         });
 
-        btnUsers = findViewById(R.id.btnUsersAdmin);
+        btnUsers = findViewById(R.id.btnChange);
         btnNewGame = findViewById(R.id.btnPlayAdmin);
         btnSetting = findViewById(R.id.btnSettingAdmin);
         btnLogoutAdmin = findViewById(R.id.btnLogoutAdmin);
@@ -45,14 +46,15 @@ public class adminMemu extends AppCompatActivity {
         btnUsers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent it = new Intent(adminMemu.this, admin_manage_layout.class);
-//                startActivity(it);
+                Intent it = new Intent(adminMemu.this, users_list.class);
+                startActivity(it);
             }
         });
         btnSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent it = new Intent(adminMemu.this, settingLayout.class);
+                startActivity(it);
             }
         });
         btnLogoutAdmin.setOnClickListener(new View.OnClickListener() {

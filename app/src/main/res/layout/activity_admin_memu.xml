@@ -26,7 +26,7 @@
         app:layout_constraintVertical_bias="0.55" />
 
     <Button
-        android:id="@+id/btnUsersAdmin"
+        android:id="@+id/btnChange"
         android:layout_width="240dp"
         android:layout_height="56dp"
         android:layout_marginTop="16dp"
@@ -49,10 +49,10 @@
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/btnUsersAdmin"
+        app:layout_constraintEnd_toEndOf="@+id/btnChange"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/btnUsersAdmin"
-        app:layout_constraintTop_toBottomOf="@+id/btnUsersAdmin" />
+        app:layout_constraintStart_toStartOf="@+id/btnChange"
+        app:layout_constraintTop_toBottomOf="@+id/btnChange" />
     <Button
         android:id="@+id/btnLogoutAdmin"
         android:layout_width="240dp"

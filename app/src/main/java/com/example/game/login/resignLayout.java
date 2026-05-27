@@ -42,11 +42,11 @@ public class resignLayout extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        txtuser = findViewById(R.id.txtUser);
-        txtname = findViewById(R.id.txtName);
-        txtpass = findViewById(R.id.txtPass);
+        txtuser = findViewById(R.id.txtUserDetail);
+        txtname = findViewById(R.id.txtNameDetail);
+        txtpass = findViewById(R.id.txtPointDetail);
         txtvePass = findViewById(R.id.txtVePass);
-        btnResign = findViewById(R.id.btnUsersAdmin);
+        btnResign = findViewById(R.id.btnChange);
 
         btnResign.setOnClickListener(new View.OnClickListener() {
             @Override

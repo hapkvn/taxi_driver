@@ -1,6 +1,12 @@
 package com.example.game.admin;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,19 +14,203 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.game.ListView.listUser;
 import com.example.game.R;
 
+import org.json.JSONObject;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
 public class userDetail extends AppCompatActivity {
+    Button btnChange, btnDelete;
+    EditText txtUserName, txtFullName, txtPoint;
+    CheckBox checkBox;
+    int role = 0;
+    String ten = ""; // Lưu tên user để dùng chung cho toàn Class
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_user_detail);
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
+        });
+
+        // Ánh xạ UI
+        txtUserName = findViewById(R.id.txtUserDetail);
+        txtFullName = findViewById(R.id.txtNameDetail);
+        txtPoint = findViewById(R.id.txtPointDetail);
+        btnChange = findViewById(R.id.btnChange);
+        btnDelete = findViewById(R.id.btnDeleteUser);
+        checkBox = findViewById(R.id.checkBox);
+
+        // 1. Lấy dữ liệu từ Intent và Kiểm tra NULL
+        Intent it = getIntent();
+        listUser user = (listUser) it.getSerializableExtra("detail_user");
+
+        if (user != null) {
+            ten = user.getUser();
+            txtUserName.setText(ten); // Hiển thị tên hiển thị tạm thời
+
+            // Tự động gọi hàm lấy thông tin chi tiết từ Server khi vừa mở trang
+            fetchUserDetails(ten);
+        } else {
+            Toast.makeText(this, "Không nhận được thông tin người dùng", Toast.LENGTH_SHORT).show();
+            finish(); // Đóng trang nếu lỗi
+            return;
+        }
+
+        // Bắt sự kiện CheckBox
+        checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            role = isChecked ? 1 : 0;
+        });
+
+        // Nút Cập nhật Quyền
+        btnChange.setOnClickListener(v -> changeUser(role, ten));
+
+        // Nút Xóa tài khoản
+        btnDelete.setOnClickListener(v -> deleteUser(ten));
+    }
+
+    // --- HÀM 1: LẤY THÔNG TIN CHI TIẾT TỪ SERVER ---
+    private void fetchUserDetails(String userName) {
+        String sql_url = "http://10.0.2.2/android_user_api/query_user.php";
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+
+        executorService.execute(() -> {
+            OkHttpClient client = new OkHttpClient();
+
+            // Chỉ cần gửi tên để hỏi Server thông tin
+            RequestBody formbody = new FormBody.Builder()
+                    .add("user_name", userName)
+                    .build();
+
+            Request request = new Request.Builder()
+                    .url(sql_url)
+                    .post(formbody)
+                    .build();
+
+            try (Response response = client.newCall(request).execute()) {
+                if (response.isSuccessful() && response.body() != null) {
+                    String jsonResponse = response.body().string();
+
+                    runOnUiThread(() -> {
+                        try {
+                            JSONObject jsonObject = new JSONObject(jsonResponse);
+                            String status = jsonObject.getString("status");
+
+                            if (status.equals("success")) {
+                                // SỬA LỖI Ở ĐÂY: Bóc dữ liệu thật từ Server ra
+                                String fetchedFullName = jsonObject.getString("full_name");
+                                int fetchedPoint = jsonObject.getInt("point");
+                                int fetchedRole = jsonObject.getInt("role");
+
+                                // In lên màn hình
+                                txtFullName.setText(fetchedFullName);
+                                txtPoint.setText(String.valueOf(fetchedPoint));
+
+                                // Cập nhật trạng thái CheckBox
+                                checkBox.setChecked(fetchedRole == 1);
+                                role = fetchedRole; // Gán đồng bộ với biến cục bộ
+
+                            } else {
+                                String message = jsonObject.getString("message");
+                                Toast.makeText(userDetail.this, message, Toast.LENGTH_LONG).show();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    });
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                runOnUiThread(() -> Toast.makeText(userDetail.this, "Lỗi kết nối với máy chủ", Toast.LENGTH_LONG).show());
+            }
+        });
+    }
+
+    // --- HÀM 2: THAY ĐỔI QUYỀN ---
+    private void changeUser(int role, String user_name) {
+        String sql_url = "http://10.0.2.2/android_user_api/change_user.php";
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            OkHttpClient client = new OkHttpClient();
+            RequestBody formbody = new FormBody.Builder()
+                    .add("user_name", user_name)
+                    .add("role", String.valueOf(role)) // Phải khớp với tên biến POST trong PHP
+                    .build();
+            Request request = new Request.Builder()
+                    .url(sql_url)
+                    .post(formbody)
+                    .build();
+            try (Response response = client.newCall(request).execute()) {
+                if (response.isSuccessful() && response.body() != null) {
+                    String jsonResponse = response.body().string();
+                    runOnUiThread(() -> {
+                        try {
+                            JSONObject jsonObject = new JSONObject(jsonResponse);
+                            String status = jsonObject.getString("status");
+                            String message = jsonObject.getString("message");
+                            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    });
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                runOnUiThread(() -> Toast.makeText(this, "Lỗi kết nối với máy chủ", Toast.LENGTH_LONG).show());
+            }
+        });
+    }
+
+    // --- HÀM 3: XÓA NGƯỜI DÙNG ---
+    private void deleteUser(String name) {
+        String sql_url = "http://10.0.2.2/android_user_api/delete_user.php";
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            OkHttpClient client = new OkHttpClient();
+            RequestBody formbody = new FormBody.Builder()
+                    .add("user_name", name)
+                    .build();
+            Request request = new Request.Builder()
+                    .url(sql_url)
+                    .post(formbody)
+                    .build();
+            try (Response response = client.newCall(request).execute()) {
+                if (response.isSuccessful() && response.body() != null) {
+                    String jsonResponse = response.body().string();
+                    runOnUiThread(() -> {
+                        try {
+                            JSONObject jsonObject = new JSONObject(jsonResponse);
+                            String status = jsonObject.getString("status");
+                            String message = jsonObject.getString("message");
+                            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+
+                            if (status.equals("success")) {
+                                // THÊM DÒNG NÀY: Xóa xong thì đóng trang chi tiết lại để về danh sách
+                                finish();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    });
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                runOnUiThread(() -> Toast.makeText(this, "Lỗi kết nối với máy chủ", Toast.LENGTH_LONG).show());
+            }
         });
     }
 }

@@ -5,6 +5,112 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#1452B3"
     tools:context=".admin.userDetail">
+    <TextView
+        android:id="@+id/gametitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="THÔNG TIN NGƯỜI CHƠI"
+        android:textColor="#FFFFFF"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <EditText
+        android:id="@+id/txtUserDetail"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="32dp"
+        android:background="#1E293B"
+        android:hint="Tên đăng nhập"
+        android:inputType="text"
+        android:paddingHorizontal="20dp"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#94A3B8"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gametitle"
+        app:layout_constraintWidth_percent="0.85" />
+
+    <EditText
+        android:id="@+id/txtNameDetail"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="16dp"
+        android:background="#1E293B"
+        android:hint="Tên hiển thị"
+        android:inputType="textPersonName"
+        android:paddingHorizontal="20dp"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#94A3B8"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtUserDetail"
+        app:layout_constraintWidth_percent="0.85" />
+
+    <EditText
+        android:id="@+id/txtPointDetail"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="16dp"
+        android:background="#1E293B"
+        android:hint="Điểm số"
+        android:inputType="textPassword"
+        android:paddingHorizontal="20dp"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#94A3B8"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtNameDetail"
+        app:layout_constraintWidth_percent="0.85" />
+
+
+    <Button
+        android:id="@+id/btnChange"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="32dp"
+        android:backgroundTint="#FF3C3C"
+        android:text="THAY ĐỔI"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkBox"
+        app:layout_constraintWidth_percent="0.85" />
+
+    <Button
+        android:id="@+id/btnDeleteUser"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="#FF3C3C"
+        android:text="XÓA NGƯỜI CHƠI"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnChange"
+        app:layout_constraintWidth_percent="0.85" />
+
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:layout_marginTop="28dp"
+        android:text="Quản trị viên"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/txtPointDetail"
+        app:layout_constraintTop_toBottomOf="@+id/txtPointDetail" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

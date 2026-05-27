@@ -14,6 +14,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.game.R;
+import com.example.game.admin.userDetail;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,7 +31,7 @@ import okhttp3.Response;
 
 public class changePasswordLayout extends AppCompatActivity {
 
-    EditText txtOldPass, txtNewPass, txtConfirmPass;
+    EditText txtOldPass, txtNewPass, txtConfirmPass, txtChangeuser, txtFullName;
     Button btnUpdatePass, btnBackFromChange;
 
     @Override
@@ -46,11 +47,15 @@ public class changePasswordLayout extends AppCompatActivity {
         });
 
         // 1. Ánh xạ các View từ giao diện XML sang Java
+        txtFullName = findViewById(R.id.txtChangeFullname);
         txtOldPass = findViewById(R.id.txtOldPass);
         txtNewPass = findViewById(R.id.txtNewPass);
         txtConfirmPass = findViewById(R.id.txtConfirmPass);
         btnUpdatePass = findViewById(R.id.btnUpdatePass);
         btnBackFromChange = findViewById(R.id.btnBackFromChange);
+        SharedPreferences prefs = getSharedPreferences("role", Context.MODE_PRIVATE);
+        String currentUser = prefs.getString("userName", "");
+        query_user(currentUser);
 
         // 2. Xử lý sự kiện khi bấm nút QUAY LẠI
         btnBackFromChange.setOnClickListener(new View.OnClickListener() {
@@ -64,12 +69,12 @@ public class changePasswordLayout extends AppCompatActivity {
         btnUpdatePass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String oldPass = txtOldPass.getText().toString().trim();
+                String fullnameChange = txtFullName.getText().toString().trim();
                 String newPass = txtNewPass.getText().toString().trim();
                 String confirmPass = txtConfirmPass.getText().toString().trim();
 
                 // Kiểm tra xem người dùng có bỏ trống ô nào không
-                if (oldPass.isEmpty() || newPass.isEmpty() || confirmPass.isEmpty()) {
+                if (fullnameChange.isEmpty() || newPass.isEmpty() || confirmPass.isEmpty()) {
                     Toast.makeText(changePasswordLayout.this, "Vui lòng nhập đầy đủ thông tin!", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -82,8 +87,6 @@ public class changePasswordLayout extends AppCompatActivity {
                 }
 
                 // Lấy tên Username đang đăng nhập hệ thống từ SharedPreferences "role" (giống loginLayout lưu)
-                SharedPreferences prefs = getSharedPreferences("role", Context.MODE_PRIVATE);
-                String currentUser = prefs.getString("userName", "");
 
                 if (currentUser.isEmpty()) {
                     Toast.makeText(changePasswordLayout.this, "Lỗi: Không tìm thấy tài khoản đăng nhập!", Toast.LENGTH_SHORT).show();
@@ -91,14 +94,14 @@ public class changePasswordLayout extends AppCompatActivity {
                 }
 
                 // Tiến hành gọi hàm đẩy dữ liệu lên Server qua API
-                changePasswordApi(currentUser, oldPass, newPass);
+                changePasswordApi(currentUser, fullnameChange, newPass);
             }
         });
     }
 
     // 4. Hàm xử lý kết nối luồng mạng kết nối API cập nhật dữ liệu mật khẩu mới
-    private void changePasswordApi(String userName, String oldPassword, String newPassword) {
-        String API_CHANGE_PASS_URL = "http://10.0.2.2/android_user_api/change_password.php";
+    private void changePasswordApi(String userName, String fullname, String newPassword) {
+        String API_CHANGE_PASS_URL = "http://10.0.2.2/android_user_api/change_information.php";
 
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
@@ -107,8 +110,8 @@ public class changePasswordLayout extends AppCompatActivity {
             // Đóng gói các tham số để gửi lên file PHP qua phương thức POST
             RequestBody formBody = new FormBody.Builder()
                     .add("user_name", userName)
-                    .add("old_password", oldPassword)
-                    .add("new_password", newPassword)
+                    .add("full_name", fullname)
+                    .add("password", newPassword)
                     .build();
 
             Request request = new Request.Builder()
@@ -146,4 +149,45 @@ public class changePasswordLayout extends AppCompatActivity {
             }
         });
     }
+    private void query_user(String UserName){
+        String sql_url = "http://10.0.2.2/android_user_api/query_user.php";
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(()->{
+            OkHttpClient client = new OkHttpClient();
+
+                RequestBody FormBody = new FormBody.Builder()
+                        .add("user_name", UserName)
+                        .build();
+                Request request = new Request.Builder()
+                        .url(sql_url)
+                        .post(FormBody)
+                        .build();
+
+                try(Response response= client.newCall(request).execute()){
+                    if(response.isSuccessful() && request.body() != null){
+                        String JsonReponce  = response.body().string();
+                        runOnUiThread(()->{
+                            try{
+                                JSONObject jsonObject = new JSONObject(JsonReponce);
+                                String status = jsonObject.getString("status");
+                                if(status.equals("success")){
+                                    String fullName = jsonObject.getString("full_name");
+                                    txtFullName.setHint(fullName);
+                                }
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        });
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                    runOnUiThread(() -> Toast.makeText(changePasswordLayout.this, "Lỗi kết nối với máy chủ", Toast.LENGTH_LONG).show());
+
+                }
+        });
+
+
+    }
+
 }
