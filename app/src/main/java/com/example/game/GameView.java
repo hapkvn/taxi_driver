@@ -54,7 +54,7 @@ public class GameView extends View {
         super(context, attrs);
         SharedPreferences prefs = context.getSharedPreferences("login", Context.MODE_PRIVATE);
         upPointPre = context.getSharedPreferences("role", Context.MODE_PRIVATE);
-        String selectedCar = prefs.getString("selected_car", "sport");
+        String selectedCar = prefs.getString("selected_car", "red");
         int carRes;
         int flyCarRes;
         switch (selectedCar) {
