@@ -33,7 +33,7 @@ public class userDetail extends AppCompatActivity {
     EditText txtUserName, txtFullName, txtPoint;
     CheckBox checkBox;
     int role = 0;
-    String ten = ""; // Lưu tên user để dùng chung cho toàn Class
+    String ten = ""; // Lưu tên đăng nhập (user_name) để sử dụng làm khoá chính khi truy vấn
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +47,7 @@ public class userDetail extends AppCompatActivity {
             return insets;
         });
 
-        // Ánh xạ UI
+        // Ánh xạ các thành phần UI từ XML
         txtUserName = findViewById(R.id.txtUserDetail);
         txtFullName = findViewById(R.id.txtNameDetail);
         txtPoint = findViewById(R.id.txtPointDetail);
@@ -55,35 +55,36 @@ public class userDetail extends AppCompatActivity {
         btnDelete = findViewById(R.id.btnDeleteUser);
         checkBox = findViewById(R.id.checkBox);
 
-        // 1. Lấy dữ liệu từ Intent và Kiểm tra NULL
+        // 1. Nhận đối tượng truyền từ màn hình danh sách và kiểm tra dữ liệu hợp lệ
         Intent it = getIntent();
         listUser user = (listUser) it.getSerializableExtra("detail_user");
 
         if (user != null) {
-            ten = user.getUser();
-            txtUserName.setText(ten); // Hiển thị tên hiển thị tạm thời
+            // ĐÃ SỬA: Lấy chính xác UserName (tên đăng nhập viết liền) thay vì FullName để tìm đúng hàng trong DB
+            ten = user.getUserName();
+            txtUserName.setText(ten);
 
-            // Tự động gọi hàm lấy thông tin chi tiết từ Server khi vừa mở trang
+            // Tự động gọi Server lấy thông tin chi tiết ngay khi vừa mở giao diện lên
             fetchUserDetails(ten);
         } else {
             Toast.makeText(this, "Không nhận được thông tin người dùng", Toast.LENGTH_SHORT).show();
-            finish(); // Đóng trang nếu lỗi
+            finish();
             return;
         }
 
-        // Bắt sự kiện CheckBox
+        // Theo dõi sự thay đổi trạng thái của nút CheckBox để gán lại quyền tương ứng
         checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             role = isChecked ? 1 : 0;
         });
 
-        // Nút Cập nhật Quyền
+        // Xử lý sự kiện khi ấn nút thay đổi quyền quản trị viên
         btnChange.setOnClickListener(v -> changeUser(role, ten));
 
-        // Nút Xóa tài khoản
+        // Xử lý sự kiện khi ấn nút xóa vĩnh viễn tài khoản người dùng
         btnDelete.setOnClickListener(v -> deleteUser(ten));
     }
 
-    // --- HÀM 1: LẤY THÔNG TIN CHI TIẾT TỪ SERVER ---
+    // --- HÀM 1: TRUY VẤN THÔNG TIN CHI TIẾT TỪ DATABASE ---
     private void fetchUserDetails(String userName) {
         String sql_url = "http://10.0.2.2/android_user_api/query_user.php";
         ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -91,7 +92,7 @@ public class userDetail extends AppCompatActivity {
         executorService.execute(() -> {
             OkHttpClient client = new OkHttpClient();
 
-            // Chỉ cần gửi tên để hỏi Server thông tin
+            // Đóng gói tham số tên đăng nhập để gửi yêu cầu tìm kiếm
             RequestBody formbody = new FormBody.Builder()
                     .add("user_name", userName)
                     .build();
@@ -111,18 +112,18 @@ public class userDetail extends AppCompatActivity {
                             String status = jsonObject.getString("status");
 
                             if (status.equals("success")) {
-                                // SỬA LỖI Ở ĐÂY: Bóc dữ liệu thật từ Server ra
+                                // Trích xuất dữ liệu trả về từ Server PHP
                                 String fetchedFullName = jsonObject.getString("full_name");
                                 int fetchedPoint = jsonObject.getInt("point");
                                 int fetchedRole = jsonObject.getInt("role");
 
-                                // In lên màn hình
+                                // Cập nhật dữ liệu thật lên các ô nhập liệu
                                 txtFullName.setText(fetchedFullName);
                                 txtPoint.setText(String.valueOf(fetchedPoint));
 
-                                // Cập nhật trạng thái CheckBox
+                                // Tự động tích hoặc bỏ tích CheckBox theo phân quyền từ hệ thống
                                 checkBox.setChecked(fetchedRole == 1);
-                                role = fetchedRole; // Gán đồng bộ với biến cục bộ
+                                role = fetchedRole; // Đồng bộ lại biến trạng thái cục bộ
 
                             } else {
                                 String message = jsonObject.getString("message");
@@ -140,7 +141,7 @@ public class userDetail extends AppCompatActivity {
         });
     }
 
-    // --- HÀM 2: THAY ĐỔI QUYỀN ---
+    // --- HÀM 2: CẬP NHẬT PHÂN QUYỀN TÀI KHOẢN ---
     private void changeUser(int role, String user_name) {
         String sql_url = "http://10.0.2.2/android_user_api/change_user.php";
         ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -148,7 +149,7 @@ public class userDetail extends AppCompatActivity {
             OkHttpClient client = new OkHttpClient();
             RequestBody formbody = new FormBody.Builder()
                     .add("user_name", user_name)
-                    .add("role", String.valueOf(role)) // Phải khớp với tên biến POST trong PHP
+                    .add("role", String.valueOf(role))
                     .build();
             Request request = new Request.Builder()
                     .url(sql_url)
@@ -199,7 +200,7 @@ public class userDetail extends AppCompatActivity {
                             Toast.makeText(this, message, Toast.LENGTH_LONG).show();
 
                             if (status.equals("success")) {
-                                // THÊM DÒNG NÀY: Xóa xong thì đóng trang chi tiết lại để về danh sách
+                                // Sau khi xoá hoàn tất, kết thúc activity để quay về màn hình danh sách trước đó
                                 finish();
                             }
                         } catch (Exception e) {
