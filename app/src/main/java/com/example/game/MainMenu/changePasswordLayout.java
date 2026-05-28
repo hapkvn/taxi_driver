@@ -101,7 +101,7 @@ public class changePasswordLayout extends AppCompatActivity {
 
     // 4. Hàm xử lý kết nối luồng mạng kết nối API cập nhật dữ liệu mật khẩu mới
     private void changePasswordApi(String userName, String fullname, String newPassword) {
-        String API_CHANGE_PASS_URL = "http://10.0.2.2/android_user_api/change_information.php";
+        String API_CHANGE_PASS_URL = "http://racing-api.atwebpages.com/change_information.php";
 
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
@@ -150,7 +150,7 @@ public class changePasswordLayout extends AppCompatActivity {
         });
     }
     private void query_user(String UserName){
-        String sql_url = "http://10.0.2.2/android_user_api/query_user.php";
+        String sql_url = "http://racing-api.atwebpages.com/query_user.php";
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(()->{
             OkHttpClient client = new OkHttpClient();

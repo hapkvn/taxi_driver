@@ -14,7 +14,7 @@ import okhttp3.Response;
 
 public class updatePoint {
     public void updatePoint(String username, int point){
-        String url = "http://10.0.2.2/android_user_api/update_point.php";
+        String url = "http://racing-api.atwebpages.com/update_point.php";
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(()->{
             OkHttpClient client = new OkHttpClient();

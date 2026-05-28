@@ -28,7 +28,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class resignLayout extends AppCompatActivity {
-    private  static final String API_REGISTER_URL = "http://10.0.2.2/android_user_api/register.php";
+    private static final String API_REGISTER_URL = "http://racing-api.atwebpages.com/register.php";
 
     EditText txtuser, txtname, txtpass, txtvePass;
     Button btnResign;

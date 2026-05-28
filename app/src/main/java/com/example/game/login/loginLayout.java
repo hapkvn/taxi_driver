@@ -34,7 +34,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class loginLayout extends AppCompatActivity {
-    private static final String API_lOGIN_URL = "http://10.0.2.2/android_user_api/login.php";
+    private static final String API_lOGIN_URL = "http://racing-api.atwebpages.com/login.php";
     EditText txtuerName, txtPassword;
     Button btnLogin;
     SharedPreferences preferences;

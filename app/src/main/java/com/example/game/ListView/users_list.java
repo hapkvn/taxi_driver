@@ -67,7 +67,7 @@ public class users_list extends AppCompatActivity {
         }
 
         // 3. Tiến hành gọi API
-        String url = "http://10.0.2.2/android_user_api/get_leaderboard.php";
+        String url = "http://racing-api.atwebpages.com/get_leaderboard.php";
 
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {

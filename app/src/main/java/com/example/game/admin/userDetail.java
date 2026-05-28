@@ -86,7 +86,7 @@ public class userDetail extends AppCompatActivity {
 
     // --- HÀM 1: TRUY VẤN THÔNG TIN CHI TIẾT TỪ DATABASE ---
     private void fetchUserDetails(String userName) {
-        String sql_url = "http://10.0.2.2/android_user_api/query_user.php";
+        String sql_url = "http://racing-api.atwebpages.com/query_user.php";
         ExecutorService executorService = Executors.newSingleThreadExecutor();
 
         executorService.execute(() -> {
@@ -143,7 +143,7 @@ public class userDetail extends AppCompatActivity {
 
     // --- HÀM 2: CẬP NHẬT PHÂN QUYỀN TÀI KHOẢN ---
     private void changeUser(int role, String user_name) {
-        String sql_url = "http://10.0.2.2/android_user_api/change_user.php";
+        String sql_url = "http://racing-api.atwebpages.com/change_user.php";
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             OkHttpClient client = new OkHttpClient();
@@ -178,7 +178,7 @@ public class userDetail extends AppCompatActivity {
 
     // --- HÀM 3: XÓA NGƯỜI DÙNG ---
     private void deleteUser(String name) {
-        String sql_url = "http://10.0.2.2/android_user_api/delete_user.php";
+        String sql_url = "http://racing-api.atwebpages.com/delete_user.php";
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             OkHttpClient client = new OkHttpClient();
