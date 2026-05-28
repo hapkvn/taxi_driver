@@ -30,7 +30,7 @@ public class MainScene extends AppCompatActivity {
         setContentView(R.layout.activity_main_scene);
         audio = new audioMain(this);
 
-        // Ánh xạ 5 nút điều khiển
+
         gameView = findViewById(R.id.gameView);
         btnLeft = findViewById(R.id.btnLeft);
         btnRight = findViewById(R.id.btnRight);
@@ -38,12 +38,12 @@ public class MainScene extends AppCompatActivity {
         btnDown = findViewById(R.id.btnDown);
         btnJump = findViewById(R.id.btnJump);
 
-        // Ánh xạ bảng Menu thua cuộc
+
         layoutGameOver = findViewById(R.id.layoutGameOver);
         btnRestart = findViewById(R.id.btnRestart);
         btnHome = findViewById(R.id.btnHome);
         audio.playSound("background");
-        // --- XỬ LÝ ẨN NÚT KHI GAME OVER ---
+
         gameView.setGameOverListener(new GameView.GameOverListener() {
             @Override
             public void onGameOver() {
@@ -54,26 +54,23 @@ public class MainScene extends AppCompatActivity {
                 btnDown.setVisibility(View.GONE);
                 btnJump.setVisibility(View.GONE);
 
-                // Hiện bảng menu Game Over lên
+
                 layoutGameOver.setVisibility(View.VISIBLE);
             }
         });
 
-        // --- XỬ LÝ BẤM NÚT MENU ---
-        // Nút Chơi Lại (Restart Game)
+
         btnRestart.setOnClickListener(v -> {
-            // Hàm recreate() sẽ tự động tải lại toàn bộ Activity từ đầu (cực kỳ nhanh)
+
             recreate();
         });
 
-        // Nút Trở Về (Back to Home)
         btnHome.setOnClickListener(v -> {
             Intent intent = new Intent(MainScene.this, MainActivity.class);
             startActivity(intent);
-            finish(); // Tắt vĩnh viễn ván game hiện tại để giải phóng RAM
+            finish();
         });
 
-        // --- XỬ LÝ CHẠM NÚT ĐIỀU KHIỂN GIỮ NGUYÊN ---
         btnLeft.setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_DOWN) gameView.setMovingLeft(true);
             else if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) gameView.setMovingLeft(false);
@@ -116,7 +113,7 @@ public class MainScene extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        // Giải phóng SoundPool khi Activity này bị hủy hẳn (bấm nút Home hoặc văng game)
+
         if (audio != null) {
             audio.release();
         }
