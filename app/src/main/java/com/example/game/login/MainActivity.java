@@ -7,10 +7,14 @@
     import android.widget.Button;
 
     import androidx.activity.EdgeToEdge;
+    import androidx.annotation.NonNull;
     import androidx.appcompat.app.AppCompatActivity;
     import androidx.core.graphics.Insets;
     import androidx.core.view.ViewCompat;
     import androidx.core.view.WindowInsetsCompat;
+    import androidx.lifecycle.DefaultLifecycleObserver;
+    import androidx.lifecycle.LifecycleOwner;
+    import androidx.lifecycle.ProcessLifecycleOwner;
 
     import com.example.game.GameView;
     import com.example.game.ListView.users_list;
@@ -19,6 +23,7 @@
     import com.example.game.MainMenu.menuLayout;
     import com.example.game.R;
     import com.example.game.admin.adminMemu;
+    import com.example.game.audioMain;
 
 
     public class MainActivity extends AppCompatActivity {
