@@ -16,6 +16,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.game.ListView.users_list;
 import com.example.game.MainScene;
 import com.example.game.R;
+import com.example.game.audioMain;
 import com.example.game.login.MainActivity;
 
 public class menuLayout extends AppCompatActivity {
@@ -29,11 +30,13 @@ public class menuLayout extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_menu_layout);
 
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        audioMain.getInstance(this).playMenuMusic();
 
         // Ánh xạ View
         tvHighScoreValue = findViewById(R.id.tvHighScoreValue);

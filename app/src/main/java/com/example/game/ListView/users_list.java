@@ -16,6 +16,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.game.R;
 import com.example.game.admin.userDetail;
+import com.example.game.audioMain;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -47,6 +48,7 @@ public class users_list extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        audioMain.getInstance(this).playMenuMusic();
 
         // 1. Ánh xạ ListView và khởi tạo mảng ngay từ đầu trên luồng chính
         lsUserView = findViewById(R.id.lstUser);
@@ -91,7 +93,9 @@ public class users_list extends AppCompatActivity {
                                 String userName = row.getString("user_name"); // Lấy thêm dòng này
                                 String fullName = row.getString("full_name");
                                 int point = row.getInt("point");
+                                if (point > 0 & role !=1 ) {
                                 listUsers.add(new listUser(userName, fullName, String.valueOf(point)));
+                                }
                             }
 
                             runOnUiThread(() -> {

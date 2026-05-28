@@ -17,6 +17,8 @@ public class MainScene extends AppCompatActivity {
 
     private GameView gameView;
     private ImageButton btnLeft, btnRight, btnUp, btnDown, btnJump;
+
+    // Khai báo quản lý âm thanh
     private audioMain audio;
 
     // Khai báo các đối tượng menu Game Over
@@ -28,9 +30,14 @@ public class MainScene extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_scene);
-        audio = new audioMain(this);
 
+        // 1. KHỞI TẠO AUDIO (Phải có dòng này đầu tiên để không bị lỗi Null)
+        audio = audioMain.getInstance(this);
 
+        // 2. PHÁT NHẠC ĐUA XE (Sai lầm ở code cũ là gọi playMenuMusic)
+        audio.playRaceMusic();
+
+        // Ánh xạ các nút và view
         gameView = findViewById(R.id.gameView);
         btnLeft = findViewById(R.id.btnLeft);
         btnRight = findViewById(R.id.btnRight);
@@ -38,12 +45,11 @@ public class MainScene extends AppCompatActivity {
         btnDown = findViewById(R.id.btnDown);
         btnJump = findViewById(R.id.btnJump);
 
-
         layoutGameOver = findViewById(R.id.layoutGameOver);
         btnRestart = findViewById(R.id.btnRestart);
         btnHome = findViewById(R.id.btnHome);
-        audio.playSound("background");
 
+        // Sự kiện Game Over
         gameView.setGameOverListener(new GameView.GameOverListener() {
             @Override
             public void onGameOver() {
@@ -54,20 +60,20 @@ public class MainScene extends AppCompatActivity {
                 btnDown.setVisibility(View.GONE);
                 btnJump.setVisibility(View.GONE);
 
-
                 layoutGameOver.setVisibility(View.VISIBLE);
             }
         });
 
 
         btnRestart.setOnClickListener(v -> {
-
             recreate();
         });
 
         btnHome.setOnClickListener(v -> {
             Intent intent = new Intent(MainScene.this, MainActivity.class);
             startActivity(intent);
+
+            audio.playMenuMusic();
             finish();
         });
 
@@ -100,22 +106,5 @@ public class MainScene extends AppCompatActivity {
             gameView.triggerJump();
         });
 
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if(audio!=null){
-            audio.bgSoundStart();
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        if (audio != null) {
-            audio.release();
-        }
     }
 }

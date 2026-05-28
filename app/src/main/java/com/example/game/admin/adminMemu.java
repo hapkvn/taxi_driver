@@ -16,6 +16,7 @@ import com.example.game.ListView.users_list;
 import com.example.game.MainMenu.settingLayout;
 import com.example.game.MainScene;
 import com.example.game.R;
+import com.example.game.audioMain;
 import com.example.game.login.MainActivity;
 
 public class adminMemu extends AppCompatActivity {
@@ -30,6 +31,7 @@ public class adminMemu extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        audioMain.getInstance(this).playMenuMusic();
 
         btnUsers = findViewById(R.id.btnChange);
         btnNewGame = findViewById(R.id.btnPlayAdmin);

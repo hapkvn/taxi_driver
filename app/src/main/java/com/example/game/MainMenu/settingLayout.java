@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 
 import com.example.game.R;
+import com.example.game.audioMain;
 
 public class settingLayout extends AppCompatActivity {
     Spinner spnChooseCar;
@@ -24,6 +25,7 @@ public class settingLayout extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting_layout);
+        audioMain.getInstance(this).playMenuMusic();
 
         spnChooseCar = findViewById(R.id.spnChooseCar);
         rgDifficulty = findViewById(R.id.rgDifficultyBasic);

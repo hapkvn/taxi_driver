@@ -16,6 +16,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.game.ListView.listUser;
 import com.example.game.R;
+import com.example.game.audioMain;
 
 import org.json.JSONObject;
 
@@ -46,6 +47,7 @@ public class userDetail extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        audioMain.getInstance(this).playMenuMusic();
 
         // Ánh xạ các thành phần UI từ XML
         txtUserName = findViewById(R.id.txtUserDetail);
