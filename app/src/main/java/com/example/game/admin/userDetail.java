@@ -1,5 +1,6 @@
 package com.example.game.admin;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -79,10 +81,50 @@ public class userDetail extends AppCompatActivity {
             role = isChecked ? 1 : 0;
         });
 
-        btnChange.setOnClickListener(v -> changeUser(role, ten));
+        btnChange.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final AlertDialog.Builder builder = new AlertDialog.Builder(userDetail.this);
+                builder.setTitle("Thông báo");
+                builder.setMessage("Bạn muốn thay đổi quyền truy cập người chơi này không?");
+                builder.setNegativeButton("Đóng", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.setPositiveButton("Thay đổi", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        changeUser(role, ten);
+                    }
+                });
+                builder.show();
+            }
+        });
 
 
-        btnDelete.setOnClickListener(v -> deleteUser(ten));
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final AlertDialog.Builder builder = new AlertDialog.Builder(userDetail.this);
+                builder.setTitle("Thông báo");
+                builder.setMessage("Bạn muốn xóa người chơi này không");
+                builder.setNegativeButton("Đóng", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        deleteUser(ten);
+                    }
+                });
+                builder.show();
+            }
+        });
     }
 
 
