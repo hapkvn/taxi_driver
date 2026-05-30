@@ -34,7 +34,7 @@ public class audioMain {
             R.raw.asphat94,
             R.raw.asphat95,
             R.raw.asphat96,
-            R.raw.asphat9_1
+            R.raw.asphat
     };
 
     // Mảng nhạc Đua xe
@@ -96,9 +96,9 @@ public class audioMain {
 
     // Kiểm tra SharedPreferences
     private boolean isSoundAllowed() {
-//        SharedPreferences prefs = context.getSharedPreferences("login", Context.MODE_PRIVATE);
-//        return prefs.getBoolean("sound_on", true);
-        return true;
+        SharedPreferences prefs = context.getSharedPreferences("login", Context.MODE_PRIVATE);
+        return prefs.getBoolean("sound_on", true);
+
     }
 
     public void playMenuMusic() {
@@ -127,7 +127,6 @@ public class audioMain {
         currentMusicType = TYPE_RACE; // Cập nhật trạng thái
     }
 
-    // Hàm dùng chung để khởi tạo và phát MediaPlayer
     // Hàm dùng chung để khởi tạo và phát MediaPlayer
     private void startMediaPlayer(int soundId, float v) {
         bgSound = MediaPlayer.create(context, soundId);

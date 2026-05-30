@@ -89,13 +89,16 @@ public class users_list extends AppCompatActivity {
                             JSONArray dataArray = jsonObject.getJSONArray("data");
 
                             for (int i = 0; i < dataArray.length(); i++) {
-                                JSONObject row = dataArray.getJSONObject(i);
-                                String userName = row.getString("user_name"); // Lấy thêm dòng này
-                                String fullName = row.getString("full_name");
-                                int point = row.getInt("point");
-                                if (point > 0 & role !=1 ) {
+
+                                    JSONObject row = dataArray.getJSONObject(i);
+                                    String userName = row.getString("user_name"); // Lấy thêm dòng này
+                                    String fullName = row.getString("full_name");
+                                    int point = row.getInt("point");
+
+                                if(point >0 || role==1 ){
                                 listUsers.add(new listUser(userName, fullName, String.valueOf(point)));
                                 }
+
                             }
 
                             runOnUiThread(() -> {
