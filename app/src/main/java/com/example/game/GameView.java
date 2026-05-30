@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 public class GameView extends View {
     updatePoint updatePoint = new updatePoint();
+    private audioMain audio;
     private Bitmap playerCar, flyCar;
     private Bitmap[] enemyCarsArray;
     private ArrayList<Enemy> enemies;
@@ -57,6 +58,7 @@ public class GameView extends View {
         String selectedCar = prefs.getString("selected_car", "red");
         int carRes;
         int flyCarRes;
+        audio = audioMain.getInstance(context);
         switch (selectedCar) {
 
             case "fly":
@@ -203,7 +205,7 @@ public class GameView extends View {
             }
             canvas.drawBitmap(playerCar, playerX, playerY, null);
 
-
+            audio.playSound("crash");
             scorePaint.setTextAlign(Paint.Align.CENTER);
             scorePaint.setColor(Color.RED);
             scorePaint.setTextSize(90);

@@ -13,13 +13,15 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.game.ListView.users_list;
+import com.example.game.MainMenu.menuLayout;
 import com.example.game.MainMenu.settingLayout;
 import com.example.game.MainScene;
 import com.example.game.R;
+import com.example.game.audioMain;
 import com.example.game.login.MainActivity;
 
 public class adminMemu extends AppCompatActivity {
-    Button btnNewGame, btnUsers, btnSetting, btnLogoutAdmin;
+    Button btnUsers, btnSetting, btnLogoutAdmin;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,24 +32,18 @@ public class adminMemu extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        audioMain.getInstance(this).playMenuMusic();
 
         btnUsers = findViewById(R.id.btnChange);
-        btnNewGame = findViewById(R.id.btnPlayAdmin);
         btnSetting = findViewById(R.id.btnSettingAdmin);
         btnLogoutAdmin = findViewById(R.id.btnLogoutAdmin);
 
-        btnNewGame.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent it = new Intent(adminMemu.this, MainScene.class);
-                startActivity(it);
-            }
-        });
+
         btnUsers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent it = new Intent(adminMemu.this, users_list.class);
-                startActivity(it);
+                Intent intent = new Intent(adminMemu.this, users_list.class);
+                startActivity(intent);
             }
         });
         btnSetting.setOnClickListener(new View.OnClickListener() {

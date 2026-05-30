@@ -7,10 +7,14 @@
     import android.widget.Button;
 
     import androidx.activity.EdgeToEdge;
+    import androidx.annotation.NonNull;
     import androidx.appcompat.app.AppCompatActivity;
     import androidx.core.graphics.Insets;
     import androidx.core.view.ViewCompat;
     import androidx.core.view.WindowInsetsCompat;
+    import androidx.lifecycle.DefaultLifecycleObserver;
+    import androidx.lifecycle.LifecycleOwner;
+    import androidx.lifecycle.ProcessLifecycleOwner;
 
     import com.example.game.GameView;
     import com.example.game.ListView.users_list;
@@ -19,6 +23,7 @@
     import com.example.game.MainMenu.menuLayout;
     import com.example.game.R;
     import com.example.game.admin.adminMemu;
+    import com.example.game.audioMain;
 
 
     public class MainActivity extends AppCompatActivity {
@@ -31,6 +36,19 @@
             super.onCreate(savedInstanceState);
             EdgeToEdge.enable(this);
             setContentView(R.layout.activity_main);
+            ProcessLifecycleOwner.get().getLifecycle().addObserver(new DefaultLifecycleObserver() {
+                @Override
+                public void onStart(@NonNull LifecycleOwner owner) {
+                    // Khi người dùng mở lại App (Foreground) -> Tiếp tục phát nhạc
+                    audioMain.getInstance(MainActivity.this).resumebg();
+                }
+
+                @Override
+                public void onStop(@NonNull LifecycleOwner owner) {
+                    // Khi người dùng ẩn App, ra màn hình chính (Background) -> Tạm dừng nhạc
+                    audioMain.getInstance(MainActivity.this).pausebg();
+                }
+            });
 
             ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
                 Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());

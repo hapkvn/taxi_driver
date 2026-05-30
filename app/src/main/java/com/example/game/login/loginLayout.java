@@ -19,6 +19,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.game.MainMenu.menuLayout;
 import com.example.game.R;
 import com.example.game.admin.adminMemu;
+import com.example.game.audioMain;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,6 +49,7 @@ public class loginLayout extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        audioMain.getInstance(this).playMenuMusic();
         preferences = getSharedPreferences("role", MODE_PRIVATE);
         txtuerName = findViewById(R.id.txtUserDetail);
         txtPassword = findViewById(R.id.txtPointDetail);

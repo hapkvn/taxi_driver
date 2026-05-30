@@ -16,6 +16,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.game.R;
+import com.example.game.audioMain;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
@@ -42,6 +43,7 @@ public class resignLayout extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        audioMain.getInstance(this).playMenuMusic();
         txtuser = findViewById(R.id.txtUserDetail);
         txtname = findViewById(R.id.txtNameDetail);
         txtpass = findViewById(R.id.txtPointDetail);

@@ -15,6 +15,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.game.R;
 import com.example.game.admin.userDetail;
+import com.example.game.audioMain;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -45,6 +46,7 @@ public class changePasswordLayout extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        audioMain.getInstance(this).playMenuMusic();
 
 
         txtFullName = findViewById(R.id.txtChangeFullname);

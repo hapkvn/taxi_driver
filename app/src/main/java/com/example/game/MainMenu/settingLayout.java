@@ -13,17 +13,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 
 import com.example.game.R;
+import com.example.game.audioMain;
 
 public class settingLayout extends AppCompatActivity {
     Spinner spnChooseCar;
     RadioGroup rgDifficulty;
     SwitchCompat switchSound;
     Button btnChangePass, btnBack;
+    SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting_layout);
+
+        prefs = getSharedPreferences("login", Context.MODE_PRIVATE);
 
         spnChooseCar = findViewById(R.id.spnChooseCar);
         rgDifficulty = findViewById(R.id.rgDifficultyBasic);
@@ -31,17 +35,14 @@ public class settingLayout extends AppCompatActivity {
         btnChangePass = findViewById(R.id.btnChangePass);
         btnBack = findViewById(R.id.btnBack);
 
+        audioMain.getInstance(this).playMenuMusic();
+
         String[] cars = {"Xe Đỏ (Mặc định)", "Xe Thể thao"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, cars);
         spnChooseCar.setAdapter(adapter);
 
-        SharedPreferences prefs = getSharedPreferences("login", Context.MODE_PRIVATE);
-
         String savedCar = prefs.getString("selected_car", "red");
-        int carPositionIndex = 0;
-        if (savedCar.equals("sport")) {
-            carPositionIndex = 1;
-        }
+        int carPositionIndex = savedCar.equals("sport") ? 1 : 0;
         spnChooseCar.setSelection(carPositionIndex);
 
         int diff = prefs.getInt("difficulty", 1);
@@ -52,6 +53,18 @@ public class settingLayout extends AppCompatActivity {
         boolean soundOn = prefs.getBoolean("sound_on", true);
         switchSound.setChecked(soundOn);
 
+        switchSound.setOnCheckedChangeListener((buttonView, isChecked) -> {
+
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean("sound_on", isChecked);
+            editor.apply();
+
+            if (isChecked) {
+                audioMain.getInstance(settingLayout.this).playMenuMusic();
+            } else {
+                audioMain.getInstance(settingLayout.this).stopbg();
+            }
+        });
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,10 +72,7 @@ public class settingLayout extends AppCompatActivity {
                 SharedPreferences.Editor editor = prefs.edit();
 
                 int carPosition = spnChooseCar.getSelectedItemPosition();
-                String carCode = "red";
-                if (carPosition == 1) {
-                    carCode = "sport";
-                }
+                String carCode = (carPosition == 1) ? "sport" : "red";
                 editor.putString("selected_car", carCode);
 
                 int selectedDiff = rgDifficulty.getCheckedRadioButtonId();
@@ -70,14 +80,12 @@ public class settingLayout extends AppCompatActivity {
                 else if (selectedDiff == R.id.rbHard) editor.putInt("difficulty", 2);
                 else editor.putInt("difficulty", 1);
 
-                editor.putBoolean("sound_on", switchSound.isChecked());
                 editor.apply();
 
                 Toast.makeText(settingLayout.this, "Đã lưu cài đặt!", Toast.LENGTH_SHORT).show();
                 finish();
             }
         });
-
 
         btnChangePass.setOnClickListener(new View.OnClickListener() {
             @Override
