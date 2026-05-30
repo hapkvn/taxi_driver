@@ -39,13 +39,13 @@
             ProcessLifecycleOwner.get().getLifecycle().addObserver(new DefaultLifecycleObserver() {
                 @Override
                 public void onStart(@NonNull LifecycleOwner owner) {
-                    // Khi người dùng mở lại App (Foreground) -> Tiếp tục phát nhạc
+
                     audioMain.getInstance(MainActivity.this).resumebg();
                 }
 
                 @Override
                 public void onStop(@NonNull LifecycleOwner owner) {
-                    // Khi người dùng ẩn App, ra màn hình chính (Background) -> Tạm dừng nhạc
+                    
                     audioMain.getInstance(MainActivity.this).pausebg();
                 }
             });

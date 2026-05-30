@@ -38,14 +38,14 @@ public class menuLayout extends AppCompatActivity {
         });
         audioMain.getInstance(this).playMenuMusic();
 
-        // Ánh xạ View
+
         tvHighScoreValue = findViewById(R.id.tvHighScoreValue);
         btnLeaderboard = findViewById(R.id.btnLeaderboard);
         btnPlayGame = findViewById(R.id.btnPlayGame);
         btnSetting = findViewById(R.id.btnSetting);
         btnLogout = findViewById(R.id.btnLogout);
 
-        // Các sự kiện click nút
+
         btnPlayGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,12 +87,12 @@ public class menuLayout extends AppCompatActivity {
         });
     }
 
-    // --- HÀM ONRESUME ĐỂ TỰ ĐỘNG CẬP NHẬT ĐIỂM ---
+
     @Override
     protected void onResume() {
         super.onResume();
 
-        // Mỗi lần màn hình Menu hiện lên, nó sẽ tự động mở két sắt lấy điểm mới nhất
+
         SharedPreferences prefRole = getSharedPreferences("role", MODE_PRIVATE);
         int myPoint = prefRole.getInt("point", 0);
         tvHighScoreValue.setText(String.valueOf(myPoint));

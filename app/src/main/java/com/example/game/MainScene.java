@@ -37,7 +37,7 @@ public class MainScene extends AppCompatActivity {
 
         audio.playRaceMusic();
 
-        // Ánh xạ các nút và view
+
         gameView = findViewById(R.id.gameView);
         btnLeft = findViewById(R.id.btnLeft);
         btnRight = findViewById(R.id.btnRight);
@@ -53,7 +53,7 @@ public class MainScene extends AppCompatActivity {
         gameView.setGameOverListener(new GameView.GameOverListener() {
             @Override
             public void onGameOver() {
-                // Giấu đi 5 nút điều khiển
+
                 btnLeft.setVisibility(View.GONE);
                 btnRight.setVisibility(View.GONE);
                 btnUp.setVisibility(View.GONE);

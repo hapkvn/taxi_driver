@@ -126,7 +126,7 @@ public class loginLayout extends AppCompatActivity {
                                 editorRole.putInt("checkRole", role);
                                 editorRole.apply();
 
-                                // 2. Lưu trạng thái đăng nhập
+
                                 SharedPreferences.Editor editorLogin = prefLogin.edit();
                                 editorLogin.putBoolean("lged", true);
                                 editorLogin.apply();
