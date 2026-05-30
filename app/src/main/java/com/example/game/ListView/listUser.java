@@ -2,10 +2,10 @@ package com.example.game.ListView;
 
 import java.io.Serializable;
 
-// BẮT BUỘC phải có "implements Serializable" ở đây
+
 public class listUser implements Serializable {
-    private String userName; // Tên đăng nhập (dùng để tìm trong Database)
-    private String fullName; // Tên hiển thị (dùng để hiện lên màn hình)
+    private String userName;
+    private String fullName;
     private String point;
 
     public listUser(String userName, String fullName, String point) {

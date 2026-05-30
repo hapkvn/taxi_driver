@@ -52,7 +52,7 @@ public class settingLayout extends AppCompatActivity {
         boolean soundOn = prefs.getBoolean("sound_on", true);
         switchSound.setChecked(soundOn);
 
-        // Nút Quay lại - giữ nguyên như cũ
+
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,7 +78,7 @@ public class settingLayout extends AppCompatActivity {
             }
         });
 
-        // Nút đổi mật khẩu - đã sửa bỏ lồng OnClickListener
+
         btnChangePass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

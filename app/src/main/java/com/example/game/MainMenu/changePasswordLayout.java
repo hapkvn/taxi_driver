@@ -38,7 +38,7 @@ public class changePasswordLayout extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_change_password); // Liên kết với file XML activity_change_password.xml
+        setContentView(R.layout.activity_change_password);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -46,7 +46,7 @@ public class changePasswordLayout extends AppCompatActivity {
             return insets;
         });
 
-        // 1. Ánh xạ các View từ giao diện XML sang Java
+
         txtFullName = findViewById(R.id.txtChangeFullname);
         txtOldPass = findViewById(R.id.txtOldPass);
         txtNewPass = findViewById(R.id.txtNewPass);
@@ -57,15 +57,15 @@ public class changePasswordLayout extends AppCompatActivity {
         String currentUser = prefs.getString("userName", "");
         query_user(currentUser);
 
-        // 2. Xử lý sự kiện khi bấm nút QUAY LẠI
+
         btnBackFromChange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish(); // Đóng màn hình này để quay trở lại màn hình Cài đặt (settingLayout)
+                finish();
             }
         });
 
-        // 3. Xử lý sự kiện khi bấm nút CẬP NHẬT
+
         btnUpdatePass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,33 +73,33 @@ public class changePasswordLayout extends AppCompatActivity {
                 String newPass = txtNewPass.getText().toString().trim();
                 String confirmPass = txtConfirmPass.getText().toString().trim();
 
-                // Kiểm tra xem người dùng có bỏ trống ô nào không
+
                 if (fullnameChange.isEmpty() || newPass.isEmpty() || confirmPass.isEmpty()) {
                     Toast.makeText(changePasswordLayout.this, "Vui lòng nhập đầy đủ thông tin!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                // Kiểm tra xem mật khẩu mới và ô nhập lại có trùng khớp không
+
                 if (!newPass.equals(confirmPass)) {
                     Toast.makeText(changePasswordLayout.this, "Mật khẩu mới nhập lại không khớp!", Toast.LENGTH_SHORT).show();
-                    txtConfirmPass.requestFocus(); // Nháy con trỏ vào ô nhập lại mật khẩu
+                    txtConfirmPass.requestFocus();
                     return;
                 }
 
-                // Lấy tên Username đang đăng nhập hệ thống từ SharedPreferences "role" (giống loginLayout lưu)
+
 
                 if (currentUser.isEmpty()) {
                     Toast.makeText(changePasswordLayout.this, "Lỗi: Không tìm thấy tài khoản đăng nhập!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                // Tiến hành gọi hàm đẩy dữ liệu lên Server qua API
+
                 changePasswordApi(currentUser, fullnameChange, newPass);
             }
         });
     }
 
-    // 4. Hàm xử lý kết nối luồng mạng kết nối API cập nhật dữ liệu mật khẩu mới
+
     private void changePasswordApi(String userName, String fullname, String newPassword) {
         String API_CHANGE_PASS_URL = "http://racing-api.atwebpages.com/change_information.php";
 
@@ -107,7 +107,7 @@ public class changePasswordLayout extends AppCompatActivity {
         executor.execute(() -> {
             OkHttpClient client = new OkHttpClient();
 
-            // Đóng gói các tham số để gửi lên file PHP qua phương thức POST
+
             RequestBody formBody = new FormBody.Builder()
                     .add("user_name", userName)
                     .add("full_name", fullname)
@@ -123,7 +123,7 @@ public class changePasswordLayout extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     String jsonResponse = response.body().string();
 
-                    // Chuyển về luồng UI Thread chính để hiển thị thông báo lên màn hình
+
                     runOnUiThread(() -> {
                         try {
                             JSONObject jsonObject = new JSONObject(jsonResponse);
@@ -132,7 +132,7 @@ public class changePasswordLayout extends AppCompatActivity {
 
                             if (status.equals("success")) {
                                 Toast.makeText(changePasswordLayout.this, "Đổi mật khẩu thành công!", Toast.LENGTH_SHORT).show();
-                                finish(); // Đổi mật khẩu thành công thì đóng luôn màn hình, tự động lùi về cài đặt
+                                finish();
                             } else {
                                 Toast.makeText(changePasswordLayout.this, message, Toast.LENGTH_LONG).show();
                             }

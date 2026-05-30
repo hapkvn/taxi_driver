@@ -48,7 +48,7 @@ public class users_list extends AppCompatActivity {
             return insets;
         });
 
-        // 1. Ánh xạ ListView và khởi tạo mảng ngay từ đầu trên luồng chính
+
         lsUserView = findViewById(R.id.lstUser);
         listUsers = new ArrayList<>();
         preferences = getSharedPreferences("role", MODE_PRIVATE);
@@ -66,7 +66,7 @@ public class users_list extends AppCompatActivity {
             });
         }
 
-        // 3. Tiến hành gọi API
+
         String url = "http://racing-api.atwebpages.com/get_leaderboard.php";
 
         ExecutorService executor = Executors.newSingleThreadExecutor();

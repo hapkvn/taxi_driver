@@ -31,17 +31,17 @@ public class adapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return ListUserr.get(position); // Đã sửa lại cho đúng chuẩn thay vì return null
+        return ListUserr.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return position; // Đã sửa lại cho đúng chuẩn thay vì return 0
+        return position;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // Tối ưu hóa: Chỉ tạo mới View nếu nó chưa tồn tại (giúp danh sách cuộn mượt hơn)
+
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(layout, null);
@@ -53,7 +53,7 @@ public class adapter extends BaseAdapter {
 
         listUser list_user = ListUserr.get(position);
 
-        // HIỂN THỊ TÊN ĐẦY ĐỦ (fullName) LÊN MÀN HÌNH
+
         userName.setText(list_user.getFullName());
         point.setText(list_user.getPoint());
         imgSeaFood.setImageResource(R.drawable.list);

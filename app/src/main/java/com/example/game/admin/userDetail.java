@@ -200,7 +200,7 @@ public class userDetail extends AppCompatActivity {
                             Toast.makeText(this, message, Toast.LENGTH_LONG).show();
 
                             if (status.equals("success")) {
-                                // Sau khi xoá hoàn tất, kết thúc activity để quay về màn hình danh sách trước đó
+
                                 finish();
                             }
                         } catch (Exception e) {

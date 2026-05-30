@@ -111,16 +111,16 @@ public class loginLayout extends AppCompatActivity {
 
                                 JSONObject userObj = jsonObject.getJSONObject("user");
 
-                                // --- BỔ SUNG LẤY THÊM DỮ LIỆU TỪ DATABASE ---
-                                int role = userObj.getInt("role");
-                                int point = userObj.getInt("point"); // Lấy điểm kỷ lục
-                                String fullName = userObj.getString("full_name"); // Lấy tên hiển thị
 
-                                // 1. Lưu Role và Toàn bộ thông tin cơ bản
+                                int role = userObj.getInt("role");
+                                int point = userObj.getInt("point");
+                                String fullName = userObj.getString("full_name");
+
+
                                 SharedPreferences.Editor editorRole = prefRole.edit();
                                 editorRole.putString("userName", user);
-                                editorRole.putString("fullName", fullName); // Lưu tên
-                                editorRole.putInt("point", point); // Lưu điểm số
+                                editorRole.putString("fullName", fullName);
+                                editorRole.putInt("point", point);
                                 editorRole.putInt("checkRole", role);
                                 editorRole.apply();
 

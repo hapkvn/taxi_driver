@@ -172,7 +172,7 @@ public class GameView extends View {
                                 updatePoint apiUpdate = new updatePoint();
                                 apiUpdate.updatePoint(username, score);
                             }
-                            // -----------------------------------------------------------------
+
 
                             gameOverListener.onGameOver();
                             isGameOverNotified = true;

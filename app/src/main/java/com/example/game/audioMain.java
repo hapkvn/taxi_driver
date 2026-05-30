@@ -41,7 +41,7 @@ public class audioMain {
         boolean isSoundOn = prefs.getBoolean("sound_on", true);
 
         if (!isSoundOn) {
-            return; // Nếu đang tắt tiếng -> Chặn luôn, thoát hàm
+            return;
         }
 
         if (soundMap.containsKey(soundKey)) {
@@ -53,12 +53,12 @@ public class audioMain {
     }
 
     public void bgSoundStart(){
-        // 2. KIỂM TRA CÀI ĐẶT TRƯỚC KHI PHÁT NHẠC NỀN
+
         SharedPreferences prefs = context.getSharedPreferences("login", Context.MODE_PRIVATE);
         boolean isSoundOn = prefs.getBoolean("sound_on", true);
 
         if (!isSoundOn) {
-            return; // Nếu đang tắt tiếng -> Chặn luôn nhạc nền, thoát hàm
+            return;
         }
 
         stopbg();
