@@ -31,7 +31,6 @@ public class MainScene extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_scene);
 
-
         audio = audioMain.getInstance(this);
 
 

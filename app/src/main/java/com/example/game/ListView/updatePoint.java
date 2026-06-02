@@ -11,15 +11,16 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 public class updatePoint {
-    public void updatePoint(String username, int point){
+    public void updatePoint(String username, int point) {
         String url = "http://racing-api.atwebpages.com/update_point.php";
         ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(()->{
+        executorService.execute(() -> {
             OkHttpClient client = new OkHttpClient();
             RequestBody frombody = new FormBody.Builder()
-                    .add("user_name",username )
+                    .add("user_name", username)
                     .add("point", String.valueOf(point))
                     .build();
             Request request = new Request.Builder()
@@ -36,4 +37,7 @@ public class updatePoint {
             }
         });
     }
+
+
+
 }
